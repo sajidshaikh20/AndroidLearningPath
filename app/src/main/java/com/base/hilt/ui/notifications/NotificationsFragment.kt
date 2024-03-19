@@ -63,4 +63,5 @@ class NotificationsFragment : FragmentBase<NotificationsViewModel, FragmentNotif
     override fun getViewModelClass(): Class<NotificationsViewModel> =
         NotificationsViewModel::class.java
 
+
 }
