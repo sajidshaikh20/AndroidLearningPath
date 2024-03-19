@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.base.hilt.ui.notifications.NotificationsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.notifications.NotificationsFragment">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/rgOptoions"
+            android:layout_margin="@dimen/_20sdp"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnEnglish"
+                android:padding="@dimen/_10sdp"
+                android:text="English" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp"
+                android:id="@+id/btnArabic"
+                android:text="Arabic" />
+        </RadioGroup>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_40sdp"
+            android:id="@+id/btnChangeLanguage"
+            android:onClick="@{()->viewModel.changeLangClick()}"
+            android:layout_marginEnd="@dimen/_40sdp"
+            app:layout_constraintTop_toBottomOf="@+id/rgOptoions"
+            android:layout_height="wrap_content"
+            android:text="Change Language" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
