@@ -1,5 +1,7 @@
 package com.base.hilt.di
 
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.network.okHttpClient
 import com.base.hilt.BuildConfig
 import com.base.hilt.ConfigFiles
 import com.base.hilt.network.ApiInterface
@@ -58,7 +60,17 @@ class NetworkModule {
 
         return builder.build()
     }
+
+    @Provides
+    fun getApolloClient(okHttpClient: OkHttpClient): ApolloClient {
+        return ApolloClient.Builder()
+            .serverUrl("https://rickandmortyapi.com/graphql/")
+            .okHttpClient(okHttpClient)
+            .build()
+    }
+
 }
+
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)

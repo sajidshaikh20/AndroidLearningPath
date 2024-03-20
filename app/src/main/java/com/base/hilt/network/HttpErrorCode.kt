@@ -5,7 +5,7 @@ package com.base.hilt.network
  * Project Name : BrainvireStructure
  */
 
-enum class HttpErrorCode(val code: Int) {
+enum class HttpErrorCode(val code: Int, val message:String ="") {
     /**
      * error in connecting to repository (Server or Database)
      */
@@ -44,5 +44,7 @@ enum class HttpErrorCode(val code: Int) {
     /**
      * Job Cancel
      */
-    JOB_CANCEL(1980)
+    JOB_CANCEL(1980),
+
+    SERVER_SIDE_VALIDATION(422)
 }

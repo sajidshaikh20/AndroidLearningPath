@@ -21,6 +21,13 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    kapt { generateStubs = true }
+    kapt {
+        correctErrorTypes = true
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/graphql'
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -78,6 +85,7 @@ dependencies {
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonVersion}"
     //sdp
     implementation "com.intuit.sdp:sdp-android:${project.sdpVersion}"
+    implementation "com.intuit.ssp:ssp-android:${project.sdpVersion}"
     // retrofit, okhttp, jackson interceptor
     def retrofitVersion = "2.9.0"
     def okHttpVersion = "4.9.1"
@@ -92,6 +100,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    // Apollo client
     implementation("com.apollographql.apollo3:apollo-runtime:3.4.0")
 }
 apollo {

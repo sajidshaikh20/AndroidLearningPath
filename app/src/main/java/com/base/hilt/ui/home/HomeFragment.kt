@@ -43,7 +43,7 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
                 }
                 is ResponseHandler.OnFailed -> {
                     viewModel.showProgressBar(false)
-                    httpFailedHandler(it.code, it.message, it.messageCode)
+                    it.code?.let { it1 -> httpFailedHandler(it1, it.message, it.messageCode) }
                 }
                 is ResponseHandler.OnSuccessResponse<ResponseData<HomeScreenVendorsListResponse>?> -> {
                     viewModel.showProgressBar(false)
