@@ -3,6 +3,9 @@ query CharactersData {
         results {
             id
             name
+            image
+            status
+            created
             episode{
                 name
                 episode
