@@ -25,7 +25,7 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.callApi()
+
     }
 
     override fun initializeScreenVariables() {
@@ -33,23 +33,6 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
     }
 
     private fun observeData() {
-        viewModel.responseLiveHomeVendorListResponse.observe(this, Observer {
-            if (it == null) {
-                return@Observer
-            }
-            when (it) {
-                is ResponseHandler.Loading -> {
-                    viewModel.showProgressBar(true)
-                }
-                is ResponseHandler.OnFailed -> {
-                    viewModel.showProgressBar(false)
-                    it.code?.let { it1 -> httpFailedHandler(it1, it.message, it.messageCode) }
-                }
-                is ResponseHandler.OnSuccessResponse<ResponseData<HomeScreenVendorsListResponse>?> -> {
-                    viewModel.showProgressBar(false)
-                    getDataBinding().model = it.response?.data
-                }
-            }
-        })
+
     }
 }

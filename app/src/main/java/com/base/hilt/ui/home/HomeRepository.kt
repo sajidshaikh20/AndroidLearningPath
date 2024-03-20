@@ -9,9 +9,5 @@ import javax.inject.Inject
 class HomeRepository @Inject constructor(private val apiInterface: ApiInterface) :
     BaseRepository() {
 
-    suspend fun callHomeScreenAPI(): ResponseHandler<ResponseData<HomeScreenVendorsListResponse>?> {
-            return makeAPICall {
-                apiInterface.callHomeScreenApiGetVendors("R", 29.3759, 47.9774)
-            }
-    }
+
 }

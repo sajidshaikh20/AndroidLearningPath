@@ -5,9 +5,5 @@ import com.base.hilt.utils.SingleLiveEvent
 
 class DashboardViewModel : ViewModelBase() {
 
-    var editProfileClickEvent = SingleLiveEvent<Any>()
 
-    fun editPhotoClick() {
-        editProfileClickEvent.call()
-    }
 }

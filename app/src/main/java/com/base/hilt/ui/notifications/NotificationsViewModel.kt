@@ -8,9 +8,5 @@ import javax.inject.Inject
 @HiltViewModel
 class NotificationsViewModel @Inject constructor() : ViewModelBase() {
 
-    val chnageLanguageClick = SingleLiveEvent<Boolean>()
 
-    fun changeLangClick() {
-        chnageLanguageClick.call()
-    }
 }

@@ -8,16 +8,13 @@ import com.base.hilt.network.ResponseHandler
 import javax.inject.Inject
 
 
-//class UserRepository @Inject constructor (
-//    val apolloClient: ApolloClient
-//) : BaseRepository() {
-//
-//    suspend fun onFeedResultFetchApi(): ResponseHandler<ApolloResponse<FeedResultQuery.Data>> {
-//        return graphQlApiCall {
-//            apolloClient.query(FeedResultQuery()).execute()
-//        }
-//    }
-//
-//
-//
-//}
+class UserRepository @Inject constructor (
+    val apolloClient: ApolloClient
+) : BaseRepository() {
+
+    suspend fun onFeedResultFetchApi(): ResponseHandler<ApolloResponse<FeedResultQuery.Data>> {
+        return graphQlApiCall {
+            apolloClient.query(FeedResultQuery()).execute()
+        }
+    }
+}
