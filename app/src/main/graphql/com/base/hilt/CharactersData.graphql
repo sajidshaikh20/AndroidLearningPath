@@ -1,0 +1,12 @@
+query CharactersData {
+    characters {
+        results {
+            id
+            name
+            episode{
+                name
+                episode
+            }
+        }
+    }
+}
