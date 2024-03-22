@@ -171,6 +171,4 @@ class MainActivity : AppCompatActivity() {
         }
         super.applyOverrideConfiguration(overrideConfiguration)
     }
-
-
 }
