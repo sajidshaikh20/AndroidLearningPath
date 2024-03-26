@@ -5,6 +5,7 @@ import com.apollographql.apollo3.network.okHttpClient
 import com.base.hilt.BuildConfig
 import com.base.hilt.ConfigFiles
 import com.base.hilt.network.ApiInterface
+import com.base.hilt.network.AuthorizationIntercepter
 import com.base.hilt.network.HttpHandleIntercept
 import dagger.Module
 import dagger.Provides
@@ -48,7 +49,8 @@ class NetworkModule {
      * generate OKhttp client
      */
     @Provides
-    fun getOkHttpClient(httpHandleIntercept: HttpHandleIntercept): OkHttpClient {
+    fun getOkHttpClient(httpHandleIntercept: HttpHandleIntercept,
+        authorizationIntercepter: AuthorizationIntercepter): OkHttpClient {
         val logging = HttpLoggingInterceptor()
         if (BuildConfig.DEBUG) logging.level = HttpLoggingInterceptor.Level.BODY
         val builder = OkHttpClient.Builder()
@@ -56,6 +58,8 @@ class NetworkModule {
         builder.readTimeout(60, TimeUnit.SECONDS)
             .connectTimeout(60, TimeUnit.SECONDS)
             .addInterceptor(httpHandleIntercept)
+            .addInterceptor(authorizationIntercepter)
+            .addInterceptor(logging)
             .build()
 
         return builder.build()
@@ -64,11 +68,12 @@ class NetworkModule {
     @Provides
     fun getApolloClient(okHttpClient: OkHttpClient): ApolloClient {
         return ApolloClient.Builder()
-            .serverUrl("https://rickandmortyapi.com/graphql/")
+            .serverUrl("https://vmeapi.demo.brainvire.dev/graphql")
             .okHttpClient(okHttpClient)
             .build()
     }
-
+    @Provides
+    fun providesAuthorizationIntercept(): AuthorizationIntercepter = AuthorizationIntercepter()
 }
 
 

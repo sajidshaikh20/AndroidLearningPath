@@ -38,9 +38,14 @@ class SplashFragment : FragmentBase<ViewModelBase, FragmentSplashBinding>() {
 
     override fun onResume() {
         super.onResume()
-        GlobalScope.launch(context = Dispatchers.Main) {
+        /*GlobalScope.launch(context = Dispatchers.Main) {
             delay(3000)
             val action = SplashFragmentDirections.actionSplashFragmentToNavigationHome()
+            getDataBinding().main.findNavController().navigate(action)
+        }*/
+    GlobalScope.launch(context = Dispatchers.Main) {
+            delay(3000)
+            val action = SplashFragmentDirections.actionSplashFragmentToLogin()
             getDataBinding().main.findNavController().navigate(action)
         }
     }
