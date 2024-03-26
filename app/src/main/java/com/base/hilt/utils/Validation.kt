@@ -1,6 +1,7 @@
 package com.base.hilt.utils
 
 import android.text.TextUtils
+import android.util.Log
 import android.util.Patterns
 import java.util.regex.Pattern
 
@@ -65,5 +66,15 @@ object Validation {
             }
             else -> !mString.equals("{}", ignoreCase = true)
         }
+    }
+    fun validatePhone(phoneNumber: String): Boolean {
+        var result = phoneNumber.filter { it.isDigit() }
+        if (result.length<10){
+            return true
+        }
+        return false
+
+        // Please enter a valid mobile number.
+        // (eg: +1 (123) 456-7890)
     }
 }
