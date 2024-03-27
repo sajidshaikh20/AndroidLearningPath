@@ -50,38 +50,35 @@ class LoginFragment : FragmentBase<LoginViewModel, FragmentLoginBinding>() {
 
 
     private fun observeData() {
-        getDataBinding().btnLogin.setOnClickListener {
-            if (checkValidations()){
 
-                viewModel.loginApi(
-                    LoginInput(
-                    phone = "+1".plus(
-                        getDataBinding().etUserName.text.toString().trim()
-                            .filter { it.isDigit() }),
-                    password = getDataBinding().etPassword.text.toString().trim(),
-                    device_id = Optional.Present(""),
-                    device_type = Optional.Present(""),
-                    ip_address = Optional.Present(""),
-                    user_timezone = Optional.Present(""),
-                    )
-                )
-            }
-        }
         viewModel.loginLiveData.observe(this) {
             viewModel.showProgressBar(it is ResponseHandler.Loading)
             when (it) {
                 is ResponseHandler.OnFailed -> {
                     Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_SHORT).show()
+                   // findNavController().navigate(R.id.action_Login_to_navigation_home)
                 }
                 is ResponseHandler.OnSuccessResponse -> {
-                    it.response.data?.login?.data?.access_token?.let { it1 ->
-                        Log.i("2181", "observeData: $it1")
-                        pref.setValueString(PrefKey.TOKEN,
-                            it1
-                        )
+                    if (it.response.data?.login?.data?.access_token!=null){
+                        pref.setValueString(PrefKey.TOKEN, it.response.data?.login?.data?.access_token!!)
                     }
                     findNavController().navigate(R.id.action_Login_to_navigation_home)
                 }
+            }
+        }
+        getDataBinding().btnLogin.setOnClickListener {
+            if (checkValidations()){
+                Log.i("2181", "observeData: after success check validation")
+                viewModel.loginApi(LoginInput(
+                    phone =  getString(R.string.plus).plus(
+                        getDataBinding().etUserName.text.toString().trim()
+                            .filter { it.isDigit() }),
+                    password = getDataBinding().etPassword.text.toString().trim(),
+                    device_id = Optional.Present(""),
+                    device_type =Optional.Present(""),
+                    ip_address =Optional.Present(""),
+                    user_timezone = Optional.Present(""),
+                ))
             }
         }
 

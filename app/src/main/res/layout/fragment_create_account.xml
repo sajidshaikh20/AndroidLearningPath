@@ -106,14 +106,13 @@
                         android:hint="Mobile"
                         android:maxLength="15"
                         android:textColor="@color/black"
-                         />
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:endIconMode="password_toggle"
                     app:boxBackgroundColor="@color/white"
                     app:hintTextAppearance="@style/TextLabel"
                     app:layout_constraintTop_toBottomOf="@id/tilMobile"
@@ -127,7 +126,7 @@
                         android:inputType="textPassword"
                         android:maxLength="16"
                         android:textColor="@color/black"
-                         />
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -136,7 +135,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     app:boxBackgroundColor="@color/white"
-                    app:endIconMode="password_toggle"
                     app:hintTextAppearance="@style/TextLabel"
                     app:layout_constraintTop_toBottomOf="@id/tilPassword"
                     app:passwordToggleEnabled="true">
@@ -149,7 +147,7 @@
                         android:inputType="textPassword"
                         android:maxLength="16"
                         android:textColor="@color/black"
-                         />
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout

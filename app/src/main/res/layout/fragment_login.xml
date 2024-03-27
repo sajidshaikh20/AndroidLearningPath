@@ -42,6 +42,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etUserName"
                 android:maxLines="1"
+                android:inputType="number"
+                android:maxLength="10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black" />

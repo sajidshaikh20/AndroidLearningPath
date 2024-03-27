@@ -65,10 +65,28 @@ class CreateAccountFragment : FragmentBase<CreateAccountViewModel, FragmentCreat
                             )
                         )
 
-                        val action = CreateAccountFragmentDirections.actionCreateAccountFragmentToLoginFragment()
-                        findNavController().navigate(action)
+
                     }
 
+                }
+            }
+        }
+        viewModel.otpVerifyLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                ResponseHandler.Loading -> {
+                    viewModel.showProgressBar(true)
+                }
+
+                is ResponseHandler.OnFailed -> {
+                    viewModel.showProgressBar(false)
+                    Log.i("2181", "observeData: ${it.message}")
+                }
+
+                is ResponseHandler.OnSuccessResponse -> {
+                    Log.i("2181", "otpverify on success: ${it.response}")
+                    viewModel.showProgressBar(false)
+                    val action = CreateAccountFragmentDirections.actionCreateAccountFragmentToLoginFragment()
+                    findNavController().navigate(action)
                 }
             }
         }
