@@ -56,12 +56,13 @@ class LoginFragment : FragmentBase<LoginViewModel, FragmentLoginBinding>() {
             when (it) {
                 is ResponseHandler.OnFailed -> {
                     Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_SHORT).show()
-                   // findNavController().navigate(R.id.action_Login_to_navigation_home)
                 }
                 is ResponseHandler.OnSuccessResponse -> {
                     if (it.response.data?.login?.data?.access_token!=null){
                         pref.setValueString(PrefKey.TOKEN, it.response.data?.login?.data?.access_token!!)
                     }
+                  val token =  pref.getValueString(PrefKey.TOKEN, "")
+                    pref.setValueBoolean(PrefKey.IS_USERlOGIN, true)
                     findNavController().navigate(R.id.action_Login_to_navigation_home)
                 }
             }
@@ -74,10 +75,10 @@ class LoginFragment : FragmentBase<LoginViewModel, FragmentLoginBinding>() {
                         getDataBinding().etUserName.text.toString().trim()
                             .filter { it.isDigit() }),
                     password = getDataBinding().etPassword.text.toString().trim(),
-                    device_id = Optional.Present(""),
-                    device_type =Optional.Present(""),
+                    device_id = Optional.Present("asfasfasasf"),
+                    device_type =Optional.Present("2"),
                     ip_address =Optional.Present(""),
-                    user_timezone = Optional.Present(""),
+                    user_timezone = Optional.Present("Asia/Calcutta"),
                 ))
             }
         }

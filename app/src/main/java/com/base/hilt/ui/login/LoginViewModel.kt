@@ -20,12 +20,12 @@ class LoginViewModel @Inject constructor(val repository: UserRepository) :
 
     val loginLiveData = SingleLiveEvent<ResponseHandler<ApolloResponse<LoginMutation.Data>>?>()
     fun loginApi(loginReq: LoginInput) {
+
+        Log.i("2181", "loginApi: $loginReq")
         viewModelScope.launch {
             loginLiveData.postValue(ResponseHandler.Loading)
             val result = repository.onLoginApi(loginReq)
             loginLiveData.postValue(result)
         }
     }
-
-
 }
