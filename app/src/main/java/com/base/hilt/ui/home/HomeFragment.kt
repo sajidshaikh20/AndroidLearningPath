@@ -20,8 +20,7 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
 
     var ChallengesList: ArrayList<Challenges?> = arrayListOf()
 
-    val gson = Gson()
-    val challengesObject = object : TypeToken<List<Challenges>>() {}.type
+   val challengesObject = object : TypeToken<List<Challenges>>() {}.type
     lateinit var adapter: challengesAdapter
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
@@ -36,10 +35,10 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
 
     override fun initializeScreenVariables() {
         observeData()
-        setadapter()
+        adapter = challengesAdapter(requireContext(), ChallengesList)
+        getDataBinding().rcvActiveChalengesList.adapter = adapter
     }
     private fun observeData() {
-
 
         viewModel.challengeListApiCall(
             ChallengeListInput(
@@ -59,44 +58,22 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
                 }
                 is ResponseHandler.OnSuccessResponse -> {
                     viewModel.showProgressBar(false)
-
                     val response = it.response.data?.challengeList?.data
                     Log.i("2181", "observeData: $response")
-
-
                     response.let {
                         if (it.isNullOrEmpty()){
                             getDataBinding().rcvActiveChalengesList.visibility = View.GONE
                         }else{
                             getDataBinding().rcvActiveChalengesList.visibility = View.VISIBLE
                             val myObjectList: List<Challenges> =
-                                gson.fromJson(gson.toJson(it), challengesObject)
+                                Gson().fromJson(Gson().toJson(it), challengesObject)
                             ChallengesList.clear()
                             ChallengesList.addAll(myObjectList)
-                            adapter.notifyDataSetChanged()
+                            adapter.updatedata()
                         }
                     }
-
-
-
-
                 }
                 }
             }
         }
-    private fun setadapter() {
-        adapter = challengesAdapter(requireContext(), ChallengesList)
-        getDataBinding().rcvActiveChalengesList.adapter = adapter
-    }
-
-    override fun onResume() {
-        super.onResume()
-        ChallengesList.clear()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        ChallengesList.clear()
-        adapter?.notifyDataSetChanged()
-    }
     }

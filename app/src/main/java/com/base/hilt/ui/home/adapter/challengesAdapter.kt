@@ -9,6 +9,7 @@ import com.base.hilt.bind.GenericRecyclerViewAdapter
 import com.base.hilt.databinding.ListInvitesHomeBinding
 import com.base.hilt.ui.model.Challenges
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 
 class challengesAdapter(context: Context, val list:ArrayList<Challenges?>)
@@ -33,16 +34,10 @@ class challengesAdapter(context: Context, val list:ArrayList<Challenges?>)
     override fun onBindData(model: Challenges, position: Int, dataBinding: ListInvitesHomeBinding) {
         dataBinding.model =model
         Log.i("2181", "onBindData: ${model.author?.avatar}")
-
+        Glide.with(dataBinding.root)
+            .load(model.author?.avatar)
+            .placeholder(R.drawable.ic_launcher_background)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(dataBinding.imgProfile)
     }
-
-
-    @BindingAdapter("imageUrl")
-    fun loadImage(view: ImageView, imageUrl: String?) {
-        Glide.with(view.context)
-            .load(imageUrl)
-            .into(view)
-    }
-
-
 }
