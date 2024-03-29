@@ -102,6 +102,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     // Apollo client
     implementation("com.apollographql.apollo3:apollo-runtime:3.4.0")
+    //gson
+    implementation 'com.google.code.gson:gson:2.10'
 }
 apollo {
     packageName.set("com.base.hilt")

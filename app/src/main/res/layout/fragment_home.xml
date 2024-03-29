@@ -16,6 +16,7 @@
             android:id="@+id/rcvfeeds"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="gone"
             android:layout_marginTop="35dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -24,6 +25,17 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/feed_result_layout" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvActiveChalengesList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="35dp"
+            android:visibility="gone"
+            android:clickable="false"
+            tools:visibility="visible"
+            android:layout_margin="@dimen/_10sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/list_invites_home" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

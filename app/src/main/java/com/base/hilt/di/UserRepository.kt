@@ -2,11 +2,13 @@ package com.base.hilt.di
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
+import com.base.hilt.ChallengeListQuery
 import com.base.hilt.CreateAccountMutation
 import com.base.hilt.LoginMutation
 import com.base.hilt.VerifySmsOtpMutation
 import com.base.hilt.base.BaseRepository
 import com.base.hilt.network.ResponseHandler
+import com.base.hilt.type.ChallengeListInput
 import com.base.hilt.type.LoginInput
 import com.base.hilt.type.OtpInput
 import com.base.hilt.type.SignUpInput
@@ -30,6 +32,11 @@ class UserRepository @Inject constructor (
     suspend fun verifyOtp(input: OtpInput): ResponseHandler<ApolloResponse<VerifySmsOtpMutation.Data>>{
         return  graphQlApiCall {
             apolloClient.mutation(VerifySmsOtpMutation(input)).execute()
+        }
+    }
+    suspend fun challengeListApi(input: ChallengeListInput): ResponseHandler<ApolloResponse<ChallengeListQuery.Data>> {
+        return graphQlApiCall {
+            apolloClient.query(ChallengeListQuery(input)).execute()
         }
     }
 }

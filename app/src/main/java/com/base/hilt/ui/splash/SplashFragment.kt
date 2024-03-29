@@ -56,5 +56,4 @@ class SplashFragment : FragmentBase<ViewModelBase, FragmentSplashBinding>() {
             }
         }
     }
-
 }
