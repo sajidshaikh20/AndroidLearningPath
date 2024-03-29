@@ -7,41 +7,39 @@
         <variable
             name="model"
             type="com.base.hilt.ui.model.Challenges" />
-
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cvInvites"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginVertical="@dimen/_5sdp"
         android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:focusable="true"
         app:cardCornerRadius="@dimen/_10sdp"
         app:cardElevation="@dimen/_2sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:strokeWidth="0dp"
-        android:focusable="true">
+        app:strokeWidth="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clCardView"
+            android:id="@+id/clCard"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tvChallengeEndingSoon"
+                android:id="@+id/tvEndingSoon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/black"
                 android:drawablePadding="@dimen/_10sdp"
                 android:includeFontPadding="false"
                 android:maxLines="1"
-                android:paddingVertical="@dimen/_2sdp"
                 android:paddingHorizontal="@dimen/_15sdp"
+                android:paddingVertical="@dimen/_2sdp"
                 android:text="Chalenging Ending Soon"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
@@ -56,22 +54,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:textColor="@color/black"
                 android:text="@{model.title}"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp"
-                app:layout_constraintEnd_toEndOf="@+id/tvChallengeEndingSoon"
+                app:layout_constraintEnd_toEndOf="@+id/tvEndingSoon"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvChallengeEndingSoon"
+                app:layout_constraintTop_toBottomOf="@id/tvEndingSoon"
                 tools:text="Hello WOrld" />
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imgProfIcon"
+                android:id="@+id/imgIcon"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginTop="20dp"
                 android:padding="2dp"
                 android:scaleType="centerCrop"
-                android:layout_marginStart="@dimen/_5sdp"
+                app:imageUrl="@{model.judge.avatar}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvCardTitle"
                 app:shapeAppearanceOverlay="@style/ImageShapeAppearanceCircle"
@@ -84,17 +83,17 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/_2sdp"
+                android:includeFontPadding="false"
                 android:paddingHorizontal="@dimen/_5sdp"
                 android:paddingVertical="@dimen/_1sdp"
-                android:text="Host"
 
+                android:text="Host"
                 android:textAllCaps="true"
-                android:includeFontPadding="false"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_8ssp"
                 app:layout_constraintBottom_toTopOf="@id/tvHostName"
-                app:layout_constraintStart_toEndOf="@+id/imgProfIcon"
-                app:layout_constraintTop_toTopOf="@+id/imgProfIcon" />
+                app:layout_constraintStart_toEndOf="@+id/imgIcon"
+                app:layout_constraintTop_toTopOf="@+id/imgIcon" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvHostName"
@@ -102,97 +101,95 @@
                 android:layout_height="wrap_content"
                 android:text="@{model.authorName}"
                 android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="@id/tvChallengeEndingSoon"
                 android:textSize="@dimen/_10ssp"
-                app:layout_constraintBottom_toBottomOf="@+id/imgProfIcon"
+                app:layout_constraintBottom_toBottomOf="@+id/imgIcon"
+                app:layout_constraintEnd_toEndOf="@id/tvEndingSoon"
                 app:layout_constraintStart_toStartOf="@+id/tvHost"
                 app:layout_constraintTop_toBottomOf="@id/tvHost" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
                 android:id="@+id/tvYoureIn"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:paddingVertical="@dimen/_5sdp"
-                android:paddingHorizontal="@dimen/_15sdp"
-                android:gravity="center|bottom"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/bg_rounded_transparent"
+                android:gravity="center|bottom"
+                android:paddingHorizontal="@dimen/_15sdp"
+                android:paddingVertical="@dimen/_5sdp"
                 android:text="You are in Details"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvHostName" />
 
             <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/brBarrier1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                android:id="@+id/brBarrier1"
-                app:layout_constraintTop_toBottomOf="@id/tvYoureIn"
-                app:constraint_referenced_ids="tvYoureIn,clJackpot"
-                />
+                app:constraint_referenced_ids="tvYoureIn"
+                app:layout_constraintTop_toBottomOf="@id/tvYoureIn" />
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:backgroundTint="@color/black"
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:background="@drawable/bg_rounded_transparent"
-                app:layout_constraintTop_toTopOf="@id/tvEndingOn"
+                android:backgroundTint="@color/black"
                 app:layout_constraintBottom_toBottomOf="@id/tvEndingOn"
-                />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvEndingOn" />
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvEndingOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvEndingOn"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="@dimen/_5sdp"
-                android:includeFontPadding="false"
                 android:backgroundTint="@color/grey"
-                android:paddingVertical="@dimen/_7sdp"
-                android:gravity="bottom"
-                tools:text="Feb 3, 2024"
-                android:text="@{model.start_at}"
                 android:drawablePadding="@dimen/_10sdp"
+                android:gravity="bottom"
+                android:includeFontPadding="false"
+                android:paddingVertical="@dimen/_7sdp"
+                android:text="@{model.start_at}"
                 android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tvEndAt"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/brBarrier1" />
+                app:layout_constraintTop_toBottomOf="@id/brBarrier1"
+                tools:text="Feb 3, 2024" />
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvEndAt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvEndAt"
                 android:layout_marginTop="@dimen/_10sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="@dimen/_5sdp"
-                android:includeFontPadding="false"
                 android:backgroundTint="@color/grey"
-                android:paddingVertical="@dimen/_7sdp"
+                android:drawablePadding="@dimen/_10sdp"
                 android:drawableTint="@color/black"
                 android:gravity="bottom"
+                android:includeFontPadding="false"
+                android:paddingVertical="@dimen/_7sdp"
                 android:text="@{model.end_at}"
-                android:drawablePadding="@dimen/_10sdp"
-                tools:text="Feb 3, 2024"
                 android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toEndOf="@id/tvEndingOn"
-                app:layout_constraintTop_toBottomOf="@id/brBarrier1" />
+                app:layout_constraintTop_toBottomOf="@id/brBarrier1"
+                tools:text="Feb 3, 2024" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_3sdp"
-                android:textColor="@color/black"
                 android:text="@{model.type.toString()}"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintBottom_toBottomOf="@id/tvHost"
                 app:layout_constraintStart_toEndOf="@+id/tvHost"
@@ -203,34 +200,14 @@
                 android:id="@+id/imgProfile"
                 android:layout_width="@dimen/_85sdp"
                 android:layout_height="@dimen/_85sdp"
+                android:layout_margin="@dimen/_10sdp"
                 android:paddingStart="@dimen/_7sdp"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{model.author.avatar}"
-                android:layout_margin="@dimen/_10sdp"
                 android:src="@drawable/ic_launcher_background"
+                app:imageUrl="@{model.author.avatar}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImageView" />
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clJackpot"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="@id/imgProfile"
-                app:layout_constraintStart_toStartOf="@id/imgProfile"
-                app:layout_constraintTop_toBottomOf="@+id/imgProfile">
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/imgJackpotLogo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_13sdp"
-                    app:backgroundTint="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:shapeAppearanceOverlay="@style/ImageShapeAppearanceCircle"
-                    />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
