@@ -86,7 +86,6 @@
                 android:includeFontPadding="false"
                 android:paddingHorizontal="@dimen/_5sdp"
                 android:paddingVertical="@dimen/_1sdp"
-
                 android:text="Host"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
@@ -99,7 +98,7 @@
                 android:id="@+id/tvHostName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{model.authorName}"
+                android:text="@{model.authorName == null &amp;&amp; !model.authorName.isEmpty() ? model.authorName : @string/default_author_name}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintBottom_toBottomOf="@+id/imgIcon"
@@ -108,7 +107,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tvHost" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tvYoureIn"
+                android:id="@+id/tvYoureInButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
@@ -127,8 +126,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="tvYoureIn"
-                app:layout_constraintTop_toBottomOf="@id/tvYoureIn" />
+                app:constraint_referenced_ids="tvYoureInButton"
+                app:layout_constraintTop_toBottomOf="@id/tvYoureInButton" />
 
             <View
                 android:layout_width="0dp"
@@ -205,6 +204,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_launcher_background"
                 app:imageUrl="@{model.author.avatar}"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImageView" />

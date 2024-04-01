@@ -16,5 +16,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="create_account">Create Account</string>
     <string name="plus">+1</string>
+    <string name="default_author_name">sajid</string>
 
 </resources>

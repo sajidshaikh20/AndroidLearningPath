@@ -21,8 +21,6 @@ query challengeList($input: challengeListInput!){
             is_author
             is_participant
             is_winner
-            is_spectator
-            is_reported
             timestamp
             author{
                 uuid
