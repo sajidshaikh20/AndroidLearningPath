@@ -84,6 +84,10 @@ abstract class GenericRecyclerViewAdapter<T, D>(
         this.notifyDataSetChanged()
 //        this.notifyItemRangeChanged(startSize, arrayList.size)
     }
+    fun addData(pos: Int, model: T) {
+        mArrayList?.add(pos, model)
+        notifyItemInserted(pos)
+    }
 
     fun updateItem(model: T, position: Int) {
         mArrayList?.set(position, model)

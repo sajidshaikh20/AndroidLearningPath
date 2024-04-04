@@ -1,8 +1,12 @@
 package com.base.hilt.network
 
 import com.base.hilt.ConfigFiles
+import com.base.hilt.ui.notifications.model.MobileData
+import okhttp3.RequestBody
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 import javax.inject.Singleton
 
@@ -11,11 +15,10 @@ import javax.inject.Singleton
  */
 @Singleton
 interface ApiInterface {
-//    @GET(ConfigFiles.API_VERSION + "find-vendors")
-//    suspend fun callHomeScreenApiGetVendors(
-//        @Query("vendor_type") vendorType: String,
-//        @Query("lat") lat: Double,
-//        @Query("long") long: Double,
-//    ): Response<ResponseData<HomeScreenVendorsListResponse>>
 
+    @GET("https://api.restful-api.dev/objects")
+    suspend fun getMobileData(): Response<MobileData>
+
+    @GET("https://api.restful-api.dev/objects")
+    suspend fun getMobileData1(): Response<ResponseData<List<Any>>>
 }

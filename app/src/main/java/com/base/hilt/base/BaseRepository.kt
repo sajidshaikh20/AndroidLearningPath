@@ -1,6 +1,7 @@
 package com.base.hilt.base
 
 import android.accounts.NetworkErrorException
+import android.util.Log
 import com.apollographql.apollo3.api.ApolloResponse
 import com.base.hilt.network.*
 import com.base.hilt.utils.Constants.JSON
@@ -18,6 +19,10 @@ import com.apollographql.apollo3.api.Operation
 import com.apollographql.apollo3.exception.ApolloHttpException
 import com.apollographql.apollo3.exception.ApolloNetworkException
 import com.base.hilt.utils.Constants
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 
 /**
@@ -31,6 +36,9 @@ open class BaseRepository {
      * Manage the Response with response code to display specific response message or code.
      * @param call ApiInterface method defination to make a call and get response from generic Area.
      */
+
+
+
     suspend fun <T : Any> makeAPICall(call: suspend () -> Response<ResponseData<T>>): ResponseHandler<ResponseData<T>?> {
         return withContext(Dispatchers.IO) {
             try {
@@ -238,5 +246,130 @@ open class BaseRepository {
         }
     }
 
+
+    suspend fun <T : Any> makeAPICall1(
+        call: suspend () -> Response<ResponseData<T>>
+    ): Flow<ResponseHandler1<ResponseData<T>?>> {
+
+        return flow {
+
+            emit(ResponseHandler1.Loading)
+
+            var response:Response<ResponseData<T>>? = null
+            var str:String?  = ""
+
+            try {
+                response = call.invoke()
+                str = response.errorBody()?.string()
+            }catch (e:Exception){
+                e.printStackTrace()
+                e.message?.let { Log.d("API_EXCEPTION", it) }
+            }
+
+            try {
+                when (response?.code()) {
+
+                    401 -> {
+                        emit(ResponseHandler1.Loading)
+                        emit(parseUnAuthorizeResponse1(str))
+                    }
+
+                    404 ->{
+
+                        if(!str.isNullOrEmpty()){
+                            emit(ResponseHandler1.Loading)
+                            emit(parseUnAuthorizeResponse1(str))
+                        }
+                    }
+
+                    422 -> {
+                        if (response.message().equals(HttpErrorCode.UNAUTHORIZED)) {
+                            emit(ResponseHandler1.Loading)
+                        } else {
+                            emit(ResponseHandler1.Loading)
+                            emit(parseUnAuthorizeResponse1(str!!))
+                        }
+
+                    }
+
+                    500 -> {
+                        emit(ResponseHandler1.Loading)
+                        emit(
+                            ResponseHandler1.OnFailed(
+                                HttpErrorCode.NOT_DEFINED.code,
+                                response.body()?.meta?.message!!,
+                                response.body()?.meta?.messageCode.toString()
+                            )
+                        )
+                    }
+
+                    in (200..300) -> {
+
+                        when (response?.body()?.meta?.statusCode) {
+                            400 -> {
+                                emit(ResponseHandler1.Loading)
+                                ResponseHandler1.OnFailed(
+                                    response.body()?.meta?.statusCode!!,
+                                    response.body()?.meta?.message!!,
+                                    "0"
+                                )
+                            }
+                            401 -> {
+                                if (response.body()?.meta?.messageCode!!.equals(HttpErrorCode.UNAUTHORIZED)) {
+                                    emit(ResponseHandler1.Loading)
+//                                    navController.navigate(R.id.loginFragment)
+                                } else {
+                                    emit(ResponseHandler1.Loading)
+                                    emit(
+                                        ResponseHandler1.OnFailed(
+                                            HttpErrorCode.UNAUTHORIZED.code,
+                                            response.body()?.meta?.message!!,
+                                            response.body()?.meta?.statusCode!!.toString()
+                                        )
+                                    )
+                                }
+                            }
+                            else -> {
+                                emit(ResponseHandler1.Loading)
+                                emit(ResponseHandler1.OnSuccessResponse(response?.body()))
+                            }
+                        }
+                    }
+
+                    else -> {
+                        emit(ResponseHandler1.Loading)
+                        emit(parseUnAuthorizeResponse1(str))
+                    }
+                }
+            } catch (e: Exception) {
+                DebugLog.print(e)
+                emit(ResponseHandler1.Loading)
+                emit(ResponseHandler1.OnFailed(HttpErrorCode.NOT_DEFINED.code, e.message!!, ""))
+            }
+
+        }.flowOn(Dispatchers.IO).catch {}
+    }
+
+    /**
+     * Response parsing for 401 status code
+     **/
+    private fun parseUnAuthorizeResponse1(bodyString: String?): ResponseHandler1.OnFailed {
+        val message: String
+        val responseWrapper: ErrorWrapper = JSON.readValue(bodyString!!)
+        message = if (responseWrapper.meta!!.statusCode == 401) {
+            if (responseWrapper.errors != null) {
+                HttpCommonMethod.getErrorMessage(responseWrapper.errors)
+            } else {
+                responseWrapper.meta.message.toString()
+            }
+        } else {
+            responseWrapper.meta.message.toString()
+        }
+        return ResponseHandler1.OnFailed(
+            HttpErrorCode.UNAUTHORIZED.code,
+            message,
+            responseWrapper.meta.messageCode.toString()
+        )
+    }
 
 }
