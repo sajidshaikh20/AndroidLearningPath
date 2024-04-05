@@ -24,24 +24,13 @@ class NotificationsViewModel @Inject constructor(var repository: NotificationRep
     private val _responseMobileDataList = MutableStateFlow<MobileDataItem?>(null)
     val responseMobileDataList: StateFlow<MobileDataItem?> = _responseMobileDataList
 
-   /* private var _responseMobileDataList1 =
-        MutableLiveData<ResponseHandler1<ResponseData<List<Any>>?>>()*/
-
     fun callMobileDataList(){
         viewModelScope.launch {
             repository.getMobileData()
                 .collect { res ->
-                    _responseMobileDataList.value = res
-                  //  _responseMobileDataList.emit(res)
+                    _responseMobileDataList.emit(res)
                 }
         }
     }
 
-    fun callMobileDataList1(){
-        viewModelScope.launch {
-            repository.getMobileData1().collect{
-              //  _responseMobileDataList1.value = it
-        }
-        }
-    }
 }

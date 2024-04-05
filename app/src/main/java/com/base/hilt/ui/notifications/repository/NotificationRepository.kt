@@ -35,9 +35,7 @@ class NotificationRepository @Inject constructor(var apiInterface: ApiInterface)
         }
     }
 
-    suspend fun getMobileData1():Flow<ResponseHandler1<ResponseData<List<Any>>?>>  {
-        return makeAPICall1 { apiInterface.getMobileData1() }
-    }
+
 
 
 }

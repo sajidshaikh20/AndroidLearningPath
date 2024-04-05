@@ -19,6 +19,4 @@ interface ApiInterface {
     @GET("https://api.restful-api.dev/objects")
     suspend fun getMobileData(): Response<MobileData>
 
-    @GET("https://api.restful-api.dev/objects")
-    suspend fun getMobileData1(): Response<ResponseData<List<Any>>>
 }

@@ -39,8 +39,6 @@ class NotificationsFragment : FragmentBase<NotificationsViewModel, FragmentNotif
     override fun initializeScreenVariables() {
         viewModel.callMobileDataList()
 
-        //flow api call with responce handler
-        //     viewModel.callMobileDataList1()
         observeData()
         adapter = MobileDataAdapter(requireContext(), mobileData)
         getDataBinding().rcvmobile.adapter = adapter
@@ -49,6 +47,7 @@ class NotificationsFragment : FragmentBase<NotificationsViewModel, FragmentNotif
 
     private fun observeData() {
 
+        Log.i("NotificationsFragment", "observeData: ")
         // Assuming this is inside a Fragment or Activity
         lifecycleScope.launchWhenStarted {
             try {
@@ -58,6 +57,7 @@ class NotificationsFragment : FragmentBase<NotificationsViewModel, FragmentNotif
                         Log.i("2181", "oncomplete}")
                     }.collect {
                         if (it != null) {
+                            Log.i("2181", "collect: $it")
                             mobileData.add(it)
                             adapter.updatedata()
                         } else {
