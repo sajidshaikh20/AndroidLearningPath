@@ -10,7 +10,9 @@ import com.base.hilt.base.LocaleManager
 import com.base.hilt.base.ToolbarModel
 import com.base.hilt.databinding.FragmentNotificationsBinding
 import com.base.hilt.network.ResponseHandler1
+import com.base.hilt.ui.notifications.handler.NotificationsFragmentClickHandler
 import com.base.hilt.ui.notifications.model.MobileData
+import com.base.hilt.ui.notifications.model.MobileDataItem
 import com.base.hilt.utils.MyPreference
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onCompletion
@@ -22,7 +24,7 @@ class NotificationsFragment : FragmentBase<NotificationsViewModel, FragmentNotif
 
     @Inject
     lateinit var localeManager: LocaleManager
-    var mobileData: ArrayList<MobileData.MobileDataItem?> = arrayListOf()
+    var mobileData: ArrayList<MobileDataItem?> = arrayListOf()
 
     lateinit var adapter: MobileDataAdapter
 
@@ -37,7 +39,11 @@ class NotificationsFragment : FragmentBase<NotificationsViewModel, FragmentNotif
     }
 
     override fun initializeScreenVariables() {
+        getDataBinding().handler = NotificationsFragmentClickHandler(this)
+
+        setUpCallListeners()
         viewModel.callMobileDataList()
+
 
         observeData()
         adapter = MobileDataAdapter(requireContext(), mobileData)
@@ -52,12 +58,13 @@ class NotificationsFragment : FragmentBase<NotificationsViewModel, FragmentNotif
         lifecycleScope.launchWhenStarted {
             try {
                 viewModel.responseMobileDataList.onStart {
-                    Log.i("2181", "Onstart: ")
+                    Log.i("NotificationsViewModel", "Onstart: ")
                 }.onCompletion {
-                        Log.i("2181", "oncomplete}")
+                        Log.i("NotificationsViewModel", "oncomplete}")
                     }.collect {
-                        if (it != null) {
-                            Log.i("2181", "collect: $it")
+                    Log.i("NotificationsViewModel", "collect: $it")
+                    if (it != null) {
+                            Log.i("NotificationsViewModel", "collect: $it")
                             mobileData.add(it)
                             adapter.updatedata()
                         } else {
@@ -68,31 +75,15 @@ class NotificationsFragment : FragmentBase<NotificationsViewModel, FragmentNotif
                 // Log any exceptions that occur during collection
                 Toast.makeText(requireContext(), "$e", Toast.LENGTH_SHORT).show()
             }
-
         }
+    }
 
+    private fun setUpCallListeners() {
 
-        /* viewModel._responseMobileDataList1.observe(this@NotificationsFragment){
-             when (it) {
-                 is ResponseHandler1.OnSuccessResponse -> {
-                     viewModel.showProgressBar(false)
-                     Toast.makeText(requireContext(), "success", Toast.LENGTH_SHORT).show()
-                 }
-                 is ResponseHandler1.OnFailed -> {
-                     viewModel.showProgressBar(false)
-                     Toast.makeText(requireContext(), "onfailed", Toast.LENGTH_SHORT).show()
-                 }
-                 is ResponseHandler1.Loading -> {
-                     viewModel.showProgressBar(true)
-                     Toast.makeText(requireContext(), "loading", Toast.LENGTH_SHORT).show()
-                 }
-                 else -> {
-                     viewModel.showProgressBar(false)
-                 }
-             }
-         }*/
-
-
+        getDataBinding().btGetFilterData.setOnClickListener {
+            mobileData.clear()
+            viewModel.callMobileDataListFilter()
+        }
     }
 
     override fun getViewModelClass(): Class<NotificationsViewModel> =

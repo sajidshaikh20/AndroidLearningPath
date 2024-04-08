@@ -17,5 +17,30 @@
     <string name="create_account">Create Account</string>
     <string name="plus">+1</string>
     <string name="default_author_name">sajid</string>
+    <string name="form">Form</string>
+    <string name="ResetTitle">Reset</string>
+    <string name="SubmitTitle">Submit</string>
+    <string name="UserNameHeading">User Details</string>
+
+
+
+    <string name="hintdob">DOB</string>
+    <string name="passwordhint">password</string>
+    <string name="ConPasswordHint">Confrim Password</string>
+    <string name="checkmale">Male</string>
+    <string name="checkFemale">Female</string>
+    <string name="hobiesTitle">Hobbies</string>
+    <string name="chessCheckBox">Chess</string>
+    <string name="cookCheckBox">Cooking</string>
+    <string name="travelCheckBox">Travel</string>
+    <string name="DanceCheckBox">Dance</string>
+    <string name="gendertitle">Gender</string>
+    <string name="nameHeading">Name :</string>
+    <string name="NumberHeading">Number:</string>
+    <string name="MailHeading">Mail:</string>
+    <string name="DobHeading">Dob:</string>
+    <string name="GenderHeading">Gender:</string>
+    <string name="HobiesHeading">Hobies:</string>
+    <string name="fragmentDemoTitle">Fragment</string>
 
 </resources>

@@ -10,6 +10,7 @@ import com.base.hilt.databinding.FragmentHomeBinding
 import com.base.hilt.network.ResponseHandler
 import com.base.hilt.type.ChallengeListInput
 import com.base.hilt.ui.home.adapter.challengesAdapter
+import com.base.hilt.ui.home.handler.HomeHandler
 import com.base.hilt.ui.model.Challenges
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -34,6 +35,7 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
 
 
     override fun initializeScreenVariables() {
+        getDataBinding().handler = HomeHandler(this)
         observeData()
         adapter = challengesAdapter(requireContext(), ChallengesList)
         getDataBinding().rcvActiveChalengesList.adapter = adapter
@@ -66,7 +68,7 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
                         }else{
                             getDataBinding().rcvActiveChalengesList.visibility = View.VISIBLE
                             val myObjectList: List<Challenges> =
-                                Gson().fromJson(Gson().toJson(it), challengesObject)
+                            Gson().fromJson(Gson().toJson(it), challengesObject)
                             ChallengesList.clear()
                             ChallengesList.addAll(myObjectList)
                             adapter.updatedata()

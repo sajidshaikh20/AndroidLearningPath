@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.base.hilt.ui.notifications.model.MobileData.MobileDataItem" />
+            type="com.base.hilt.ui.notifications.model.MobileDataItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

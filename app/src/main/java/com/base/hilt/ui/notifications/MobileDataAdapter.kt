@@ -5,7 +5,7 @@ import android.util.Log
 import com.base.hilt.R
 import com.base.hilt.bind.GenericRecyclerViewAdapter
 import com.base.hilt.databinding.LayoutMobileDataBinding
-import com.base.hilt.ui.notifications.model.MobileData.MobileDataItem
+import com.base.hilt.ui.notifications.model.MobileDataItem
 
 
 class MobileDataAdapter(
@@ -22,10 +22,8 @@ class MobileDataAdapter(
         position: Int,
         dataBinding: LayoutMobileDataBinding
     ) {
-
         if (model.data!=null){
-            Log.i("2181", "MobileDataAdapter: ${model.id}")
-            Log.i("2181", "MobileDataAdapter: ${model.name}")
+            Log.i("MobileDataAdapter", "MobileDataAdapter: ${model.id}")
             dataBinding.viewModel = model
         }
     }
@@ -37,6 +35,4 @@ class MobileDataAdapter(
     ) {
 
     }
-
-
 }
