@@ -27,7 +27,7 @@ class UserFormRepository @Inject constructor(
 
     fun getUserData(): Flow<UserData> {
         val  json  = pref.getValueString(PrefKey.USERMODEL,"")
-        val flow = flow<UserData> {
+        val flow = flow {
             val data = gson.fromJson(json, UserData::class.java)
             if (data!=null){
                 emit(data)

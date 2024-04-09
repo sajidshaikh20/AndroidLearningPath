@@ -1,6 +1,9 @@
 package com.base.hilt.ui.userForm
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
@@ -12,15 +15,19 @@ import com.base.hilt.ui.userForm.handler.UserFormHandler
 import com.base.hilt.ui.userForm.model.UserData
 import com.base.hilt.ui.userForm.validator.UserFormValidator
 import com.base.hilt.ui.userForm.viewmodel.UserFormViewModel
+import com.base.hilt.utils.MyPreference
+import com.base.hilt.utils.PrefKey
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.observeOn
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding>() {
+
+    @Inject
+    lateinit var mPref: MyPreference
     override fun getLayoutId(): Int {
         return R.layout.fragment_user_form
     }
@@ -31,6 +38,8 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
 
     override fun initializeScreenVariables() {
         observeData()
+
+        setupErrorHandling()
         //viewmodel collecting data
         viewModel.collectData()
 
@@ -38,8 +47,9 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
             handler = UserFormHandler(this@UserFormFragment)
             validator = UserFormValidator()
         }
-
         setupSpinner()
+        //get pref Data
+        getPrefData()
 
     }
 
@@ -52,7 +62,10 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
                         // This block will execute whenever new data is emitted
                         if (data != null) {
                             Log.i("UserFormFragment", "observeData: $data")
-                            getDataBinding().includeUserLayout.model = data
+                            getDataBinding().clUserInfor.visibility = View.VISIBLE
+                            setData(data)
+                        } else {
+                            getDataBinding().clUserInfor.visibility = View.GONE
                         }
                     }
             } catch (e: Exception) {
@@ -66,22 +79,19 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
     private fun setupSpinner() {
         val adapter = ArrayAdapter(
             requireContext(),
-            android.R.layout.simple_spinner_item,
-            listOf("20 to 25", "25 to 30", "30 to 50")
+            android.R.layout.simple_spinner_dropdown_item,
+            resources.getStringArray(R.array.spinner_items)
         )
         getDataBinding().spinner.adapter = adapter
     }
 
-    fun resetData() {
-        Toast.makeText(requireContext(), "Reset data ", Toast.LENGTH_SHORT).show()
-    }
 
     fun onSubmitForm() {
-        viewModel.collectData()
+
         viewModel.setUserInput(
             UserData(
-                userName = getDataBinding().edtUserName.text.toString().trim(),
-                fullName = getDataBinding().edtFullName.text.toString().trim(),
+                userName = getDataBinding().validator?.username ?: "",
+                fullName = getDataBinding().validator?.fullname?:  "",
                 gender = if (getDataBinding().rbMale.isChecked) {
                     "Male"
                 } else if (getDataBinding().rbFemale.isChecked) {
@@ -91,21 +101,108 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
                     //if user not select
                 },
                 healthIssue = getHealthIssue(),
-                ageBetween = getDataBinding().spinner.selectedItem.toString()
+                ageBetween = getDataBinding().spinner.selectedItemPosition.toString()
             )
         )
+
+        viewModel.collectData()
     }
+
+
     private fun getHealthIssue(): String {
         var checkbox = ""
         if (getDataBinding().checkBoxFever.isChecked) {
-            checkbox += "Fever "
+            checkbox += getString(R.string.fever)
         }
         if (getDataBinding().checkBoxMaleria.isChecked) {
-            checkbox += "Maleria "
+            checkbox += getString(R.string.malaria)
         }
         if (getDataBinding().checkBoxother.isChecked) {
-            checkbox += "Other "
+            checkbox += getString(R.string.other)
         }
         return checkbox
+    }
+
+    private fun clearExitFormSelection() {
+        getDataBinding().apply {
+            edtUserName.text?.clear()
+            edtFullName.text?.clear()
+            edtUserName.clearFocus()
+            edtFullName.clearFocus()
+            rgGender.clearCheck()
+            checkBoxFever.isChecked = false
+            checkBoxother.isChecked = false
+            checkBoxMaleria.isChecked = false
+            spinner.setSelection(0)
+        }
+    }
+
+    fun resetData() {
+        mPref.setClearStringValue(PrefKey.USERMODEL)
+        Toast.makeText(requireContext(), "Reset data ", Toast.LENGTH_SHORT).show()
+        val json = mPref.getValueString(PrefKey.USERMODEL, "")
+        val data = Gson().fromJson(json, UserData::class.java)
+        if (data == null) {
+            getDataBinding().clUserInfor.visibility = View.GONE
+            clearExitFormSelection()
+        }
+
+    }
+
+    fun showToastMessage(s: String) {
+        Toast.makeText(requireContext(), s, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setData(model: UserData) {
+        getDataBinding().model = model
+
+        getDataBinding().edtUserName.setText(model.userName)
+
+        getDataBinding().edtFullName.setText(model.fullName)
+
+        if (model.gender == "Male") {
+            getDataBinding().validator?.isMaleChecked = true
+        }
+        if (model.gender == "Female") {
+            getDataBinding().validator?.isFemaleChecked = true
+        }
+        if (model.healthIssue.contains(getString(R.string.fever))){
+            getDataBinding().checkBoxFever.isChecked = true
+        }
+        if (model.healthIssue.contains(getString(R.string.malaria))){
+            getDataBinding().checkBoxMaleria.isChecked = true
+        }
+        if (model.healthIssue.contains(getString(R.string.other))){
+            getDataBinding().checkBoxother.isChecked = true
+        }
+        getDataBinding().spinner.setSelection(model.ageBetween.toInt())
+    }
+
+  private  fun setupErrorHandling() {
+        getDataBinding().edtUserName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                getDataBinding().tilUserName.error = null
+            }
+        })
+
+        getDataBinding().edtFullName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                getDataBinding().tilFullName.error = null
+            }
+        })
+    }
+
+    fun getPrefData(){
+        val json = mPref.getValueString(PrefKey.USERMODEL, "")
+        val data = Gson().fromJson(json, UserData::class.java)
+        if (data != null) {
+            getDataBinding().clUserInfor.visibility = View.VISIBLE
+            setData(data)
+        }
     }
 }

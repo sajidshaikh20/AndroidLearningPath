@@ -11,6 +11,25 @@
         <variable
             name="validator"
             type="com.base.hilt.ui.userForm.validator.UserFormValidator" />
+
+        <variable
+            name="model"
+            type="com.base.hilt.ui.userForm.model.UserData" />
+
+        <variable
+            name="fever"
+            type="String"
+            android:value="Fever " />
+
+        <variable
+            name="maleria"
+            type="String"
+            android:value="Maleria " />
+
+        <variable
+            name="other"
+            type="String"
+            android:value="Other " />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,6 +62,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
+                android:text="@={validator.username}"
                 tools:ignore="DuplicateSpeakableTextCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,6 +91,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
+                android:text="@={validator.fullname}"
                 tools:ignore="DuplicateSpeakableTextCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,6 +124,7 @@
                 android:id="@+id/rbMale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="@{validator.isMaleChecked}"
                 android:padding="10dp"
                 android:text="Male" />
 
@@ -110,6 +132,7 @@
                 android:id="@+id/rbFemale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="@{validator.isFemaleChecked}"
                 android:padding="10dp"
                 android:text="Female" />
         </RadioGroup>
@@ -127,12 +150,12 @@
             app:layout_constraintStart_toStartOf="@+id/rgGender"
             app:layout_constraintTop_toBottomOf="@id/rgGender" />
 
-
         <CheckBox
             android:id="@+id/checkBoxFever"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Fever"
+            android:checked="@{model.healthIssue != null &amp;&amp; model.healthIssue.contains(@string/fever)}"
             app:layout_constraintStart_toStartOf="@id/HealthIssue"
             app:layout_constraintTop_toBottomOf="@id/HealthIssue" />
 
@@ -142,6 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:text="Maleria"
+            android:checked="@{model.healthIssue != null &amp;&amp; model.healthIssue.contains(@string/malaria)}"
             app:layout_constraintStart_toEndOf="@id/checkBoxFever"
             app:layout_constraintTop_toBottomOf="@id/HealthIssue" />
 
@@ -151,6 +175,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:text="Other"
+            android:checked="@{model.healthIssue != null &amp;&amp; model.healthIssue.contains(@string/other)}"
             app:layout_constraintStart_toEndOf="@id/checkBoxMaleria"
             app:layout_constraintTop_toBottomOf="@id/HealthIssue" />
 
@@ -173,15 +198,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@+id/Age"
-            app:layout_constraintTop_toBottomOf="@id/Age" />
+            app:layout_constraintTop_toBottomOf="@id/Age"
+             />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/SubmitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#2D9106"
+            android:onClick="@{()->handler.submitBtnClick(validator)}"
             android:text="@string/SubmitTitle"
-            android:onClick="@{()->handler.submitBtnClick()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/ResetButton"
             app:layout_constraintStart_toStartOf="parent" />
@@ -191,20 +217,152 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#2D9106"
-            android:text="@string/ResetTitle"
             android:onClick="@{()->handler.resetBtnClick()}"
+            android:text="@string/ResetTitle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/SubmitButton" />
 
 
-        <include
-            android:id="@+id/includeUserLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clUserInfor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/spinner"
-            layout="@layout/layout_user_info" />
+            tools:visibility="visible">
 
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:backgroundTint="#C6F6F1F1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/hadding"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/UserNameHeading"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="#3CA68585"
+                        app:layout_constraintTop_toBottomOf="@id/hadding" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mtvUserNametitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="40dp"
+                        android:text="User Name"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mtvUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="60dp"
+                        android:text="@{model.userName}"
+                        app:layout_constraintStart_toEndOf="@id/mtvUserNametitle"
+                        app:layout_constraintTop_toTopOf="@id/mtvUserNametitle"
+                        tools:text="Text" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mtvFullName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Full Name"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@id/mtvUserNametitle"
+                        app:layout_constraintTop_toBottomOf="@id/mtvUserNametitle" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mtvFullNameShow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="60dp"
+                        android:text="@{model.fullName}"
+                        app:layout_constraintStart_toEndOf="@id/mtvUserNametitle"
+                        app:layout_constraintTop_toBottomOf="@+id/mtvUserNametitle"
+                        tools:text="Test" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mtvage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Age"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@id/mtvFullName"
+                        app:layout_constraintTop_toBottomOf="@id/mtvFullName" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mtvageShow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{model.ageBetween}"
+                        app:layout_constraintStart_toStartOf="@id/mtvFullNameShow"
+                        app:layout_constraintTop_toBottomOf="@id/mtvFullNameShow"
+                        tools:text="Test" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mtvHealthIssue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Health Issue"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@id/mtvage"
+                        app:layout_constraintTop_toBottomOf="@+id/mtvage" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mtvHealth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{model.healthIssue}"
+                        app:layout_constraintStart_toStartOf="@id/mtvFullNameShow"
+                        app:layout_constraintTop_toBottomOf="@id/mtvage"
+                        tools:text="Test" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mtvGendertitile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/GenderHeading"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@id/mtvage"
+                        app:layout_constraintTop_toBottomOf="@+id/mtvHealthIssue" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mtvGenderShow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{model.gender}"
+                        app:layout_constraintStart_toStartOf="@id/mtvFullNameShow"
+                        app:layout_constraintTop_toBottomOf="@id/mtvHealth"
+                        tools:text="Test" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

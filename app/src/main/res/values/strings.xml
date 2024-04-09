@@ -42,5 +42,18 @@
     <string name="GenderHeading">Gender:</string>
     <string name="HobiesHeading">Hobies:</string>
     <string name="fragmentDemoTitle">Fragment</string>
+    <string name="fever">"Fever "</string>
+    <string name="malaria">"Malaria "</string>
+    <string name="other">"Other "</string>
+
+
+    <string-array name="spinner_items">
+        <item>Selected Item</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+    </string-array>
+
+
 
 </resources>

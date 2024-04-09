@@ -53,7 +53,7 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
         viewModel.challengeListLiveData.observe(viewLifecycleOwner) { it ->
             when (it) {
                 is  ResponseHandler.Loading-> {
-                    viewModel.showProgressBar(true)
+                    viewModel.showProgressBar(false)
                 }
                 is ResponseHandler.OnFailed -> {
                     viewModel.showProgressBar(false)

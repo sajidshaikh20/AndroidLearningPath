@@ -20,7 +20,7 @@ class UserFormViewModel @Inject constructor(val repository: UserFormRepository) 
     private val _userDataList = MutableStateFlow<UserData?>(null)
     val userDataList: StateFlow<UserData?> = _userDataList
 
-    fun setUserInput(model: UserData) {
+     fun setUserInput(model: UserData) {
         Log.i("UserFormViewModel", "setUserInput: $model")
         viewModelScope.launch {
             repository.submitUserData(model)

@@ -1,19 +1,22 @@
 package com.base.hilt.ui.userForm.handler
 
 import com.base.hilt.ui.userForm.UserFormFragment
+import com.base.hilt.ui.userForm.validator.UserFormValidator
 
-class UserFormHandler(private val context: UserFormFragment) {
+class UserFormHandler(private val contextUser: UserFormFragment) {
     fun resetBtnClick(){
-        context.let {
-            context.apply {
+        contextUser.let {
+            contextUser.apply {
                 resetData()
             }
         }
     }
-    fun submitBtnClick(){
-        context.let {
-            context.apply {
-                onSubmitForm()
+    fun submitBtnClick(userFormValidator: UserFormValidator){
+        contextUser.let {
+            contextUser.apply {
+                if (userFormValidator.isFormValidated(contextUser)){
+                    onSubmitForm()
+                }
             }
         }
     }
