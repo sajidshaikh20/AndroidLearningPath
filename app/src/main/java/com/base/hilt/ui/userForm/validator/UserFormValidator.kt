@@ -8,6 +8,7 @@ class UserFormValidator {
     var fullname: String = ""
     var isMaleChecked: Boolean = false
     var isFemaleChecked: Boolean = false
+    var isGenderChecked: Boolean = false
 
     fun isFormValidated(context: UserFormFragment): Boolean {
         var isFormValidated = true
@@ -37,15 +38,19 @@ class UserFormValidator {
         } else {
             context.getDataBinding().tilFullName.error = null
         }
+        isGenderChecked = context.getDataBinding().rbMale.isChecked || context.getDataBinding().rbFemale.isChecked
+        if (!isGenderChecked){
+            isFormValidated = false
+           context.showToastMessage("Please Select  gender")
+        }
 
         // Validate gender
-        isMaleChecked = context.getDataBinding().rbMale.isChecked
-        isFemaleChecked = context.getDataBinding().rbFemale.isChecked
-        if (!isMaleChecked && !isFemaleChecked) {
-            isFormValidated = false
-            context.showToastMessage("Please Select  gender")
-
-        }
+//        isMaleChecked = context.getDataBinding().rbMale.isChecked
+//        isFemaleChecked = context.getDataBinding().rbFemale.isChecked
+//        if (!isMaleChecked && !isFemaleChecked) {
+//            isFormValidated = false
+//            context.showToastMessage("Please Select  gender")
+//        }
         // Validate health issue
         if (!context.getDataBinding().checkBoxFever.isChecked &&
             !context.getDataBinding().checkBoxMaleria.isChecked &&

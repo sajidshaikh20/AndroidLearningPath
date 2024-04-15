@@ -124,7 +124,7 @@
                 android:id="@+id/rbMale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="@{validator.isMaleChecked}"
+                android:checked="@{validator.isGenderChecked}"
                 android:padding="10dp"
                 android:text="Male" />
 
@@ -132,7 +132,7 @@
                 android:id="@+id/rbFemale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="@{validator.isFemaleChecked}"
+                android:checked="@{!validator.isGenderChecked}"
                 android:padding="10dp"
                 android:text="Female" />
         </RadioGroup>

@@ -28,6 +28,9 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
 
     @Inject
     lateinit var mPref: MyPreference
+
+    var healthIssues = ArrayList<String>()
+
     override fun getLayoutId(): Int {
         return R.layout.fragment_user_form
     }
@@ -98,7 +101,6 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
                     "Female"
                 } else {
                     ""
-                    //if user not select
                 },
                 healthIssue = getHealthIssue(),
                 ageBetween = getDataBinding().spinner.selectedItemPosition.toString()
@@ -130,6 +132,7 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
             edtUserName.clearFocus()
             edtFullName.clearFocus()
             rgGender.clearCheck()
+            validator?.isGenderChecked = false
             checkBoxFever.isChecked = false
             checkBoxother.isChecked = false
             checkBoxMaleria.isChecked = false
@@ -161,10 +164,12 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
         getDataBinding().edtFullName.setText(model.fullName)
 
         if (model.gender == "Male") {
-            getDataBinding().validator?.isMaleChecked = true
+            Log.i("gender", "setData: ")
+            getDataBinding().validator?.isGenderChecked = true
         }
         if (model.gender == "Female") {
-            getDataBinding().validator?.isFemaleChecked = true
+            Log.i("gender", "setData: ")
+            getDataBinding().validator?.isGenderChecked = false
         }
         if (model.healthIssue.contains(getString(R.string.fever))){
             getDataBinding().checkBoxFever.isChecked = true
@@ -176,6 +181,8 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
             getDataBinding().checkBoxother.isChecked = true
         }
         getDataBinding().spinner.setSelection(model.ageBetween.toInt())
+
+
     }
 
   private  fun setupErrorHandling() {
