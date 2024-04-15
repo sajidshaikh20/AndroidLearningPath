@@ -1,5 +1,9 @@
 package com.base.hilt.ui.home
 
+import android.R.attr.action
+import android.R.attr.category
+import android.R.attr.label
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.apollographql.apollo3.api.Optional
@@ -39,6 +43,10 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
         observeData()
         adapter = challengesAdapter(requireContext(), ChallengesList)
         getDataBinding().rcvActiveChalengesList.adapter = adapter
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
     private fun observeData() {
 
