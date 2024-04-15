@@ -29,7 +29,7 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
     @Inject
     lateinit var mPref: MyPreference
 
-    var healthIssues = ArrayList<String>()
+
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_user_form
@@ -102,7 +102,7 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
                 } else {
                     ""
                 },
-                healthIssue = getHealthIssue(),
+                healthIssues =getHealthIssues(),
                 ageBetween = getDataBinding().spinner.selectedItemPosition.toString()
             )
         )
@@ -110,6 +110,21 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
         viewModel.collectData()
     }
 
+    private fun getHealthIssues(): ArrayList<String> {
+        val healthIssues = ArrayList<String>()
+
+        if (getDataBinding().checkBoxFever.isChecked) {
+            healthIssues.add(getString(R.string.fever))
+        }
+        if (getDataBinding().checkBoxMaleria.isChecked) {
+            healthIssues.add(getString(R.string.malaria))
+        }
+        if (getDataBinding().checkBoxother.isChecked) {
+            healthIssues.add(getString(R.string.other))
+        }
+
+        return  healthIssues
+    }
 
     private fun getHealthIssue(): String {
         var checkbox = ""
@@ -171,13 +186,13 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
             Log.i("gender", "setData: ")
             getDataBinding().validator?.isGenderChecked = false
         }
-        if (model.healthIssue.contains(getString(R.string.fever))){
+        if (model.healthIssues.contains(getString(R.string.fever))){
             getDataBinding().checkBoxFever.isChecked = true
         }
-        if (model.healthIssue.contains(getString(R.string.malaria))){
+        if (model.healthIssues.contains(getString(R.string.malaria))){
             getDataBinding().checkBoxMaleria.isChecked = true
         }
-        if (model.healthIssue.contains(getString(R.string.other))){
+        if (model.healthIssues.contains(getString(R.string.other))){
             getDataBinding().checkBoxother.isChecked = true
         }
         getDataBinding().spinner.setSelection(model.ageBetween.toInt())

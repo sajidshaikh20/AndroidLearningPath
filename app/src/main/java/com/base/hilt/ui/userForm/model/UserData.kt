@@ -4,6 +4,6 @@ data class UserData(
     val userName: String,
     val fullName: String,
     val gender: String,
-    val healthIssue: String,
+    val healthIssues: ArrayList<String>,
     val ageBetween: String,
 )

@@ -116,7 +116,6 @@
                     android:id="@+id/mtvHealth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{model.healthIssue}"
                     app:layout_constraintStart_toStartOf="@id/mtvFullNameShow"
                     app:layout_constraintTop_toBottomOf="@id/mtvage"
                      />

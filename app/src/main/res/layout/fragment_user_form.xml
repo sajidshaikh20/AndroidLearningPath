@@ -16,20 +16,7 @@
             name="model"
             type="com.base.hilt.ui.userForm.model.UserData" />
 
-        <variable
-            name="fever"
-            type="String"
-            android:value="Fever " />
 
-        <variable
-            name="maleria"
-            type="String"
-            android:value="Maleria " />
-
-        <variable
-            name="other"
-            type="String"
-            android:value="Other " />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -155,7 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Fever"
-            android:checked="@{model.healthIssue != null &amp;&amp; model.healthIssue.contains(@string/fever)}"
+            android:checked="@{model.healthIssues != null &amp;&amp; model.healthIssues.contains(@string/fever)}"
             app:layout_constraintStart_toStartOf="@id/HealthIssue"
             app:layout_constraintTop_toBottomOf="@id/HealthIssue" />
 
@@ -165,7 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:text="Maleria"
-            android:checked="@{model.healthIssue != null &amp;&amp; model.healthIssue.contains(@string/malaria)}"
+            android:checked="@{model.healthIssues != null &amp;&amp; model.healthIssues.contains(@string/malaria)}"
             app:layout_constraintStart_toEndOf="@id/checkBoxFever"
             app:layout_constraintTop_toBottomOf="@id/HealthIssue" />
 
@@ -175,7 +162,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:text="Other"
-            android:checked="@{model.healthIssue != null &amp;&amp; model.healthIssue.contains(@string/other)}"
+            android:checked="@{model.healthIssues != null &amp;&amp; model.healthIssues.contains(@string/other)}"
             app:layout_constraintStart_toEndOf="@id/checkBoxMaleria"
             app:layout_constraintTop_toBottomOf="@id/HealthIssue" />
 
@@ -338,7 +325,7 @@
                         android:id="@+id/mtvHealth"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{model.healthIssue}"
+                        android:text="@{model.healthIssues.toString()}"
                         app:layout_constraintStart_toStartOf="@id/mtvFullNameShow"
                         app:layout_constraintTop_toBottomOf="@id/mtvage"
                         tools:text="Test" />
