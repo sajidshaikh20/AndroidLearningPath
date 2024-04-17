@@ -1,11 +1,12 @@
 package com.base.hilt.ui.home
 
-import android.R.attr.action
-import android.R.attr.category
-import android.R.attr.label
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.app.ActivityCompat
 import com.apollographql.apollo3.api.Optional
 import com.base.hilt.R
 import com.base.hilt.base.FragmentBase
@@ -16,6 +17,7 @@ import com.base.hilt.type.ChallengeListInput
 import com.base.hilt.ui.home.adapter.challengesAdapter
 import com.base.hilt.ui.home.handler.HomeHandler
 import com.base.hilt.ui.model.Challenges
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,6 +26,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
 
     var ChallengesList: ArrayList<Challenges?> = arrayListOf()
+
+   private val  PERMISSION_REQUEST_CODE = 112
 
    val challengesObject = object : TypeToken<List<Challenges>>() {}.type
     lateinit var adapter: challengesAdapter
@@ -40,9 +44,20 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
 
     override fun initializeScreenVariables() {
         getDataBinding().handler = HomeHandler(this)
+        getFCMToken()
+
         observeData()
         adapter = challengesAdapter(requireContext(), ChallengesList)
         getDataBinding().rcvActiveChalengesList.adapter = adapter
+
+
+        //Ask for Permission in android 13
+        if (Build.VERSION.SDK_INT > 32) {
+            if (!shouldShowRequestPermissionRationale("112")){
+                getNotificationPermission()
+            }
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,4 +101,52 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
                 }
             }
         }
+    private fun getFCMToken() {
+        FirebaseMessaging.getInstance().token
+            .addOnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    return@addOnCompleteListener
+                }
+                val token = task.result
+                Log.i("Token", "getFCMToken: $token")
+
+            }
+    }
+    fun getNotificationPermission() {
+        try {
+            if (Build.VERSION.SDK_INT > 32) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(), arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    PERMISSION_REQUEST_CODE
+                )
+            }
+        } catch (e: Exception) {
+            Log.d("error", "getNotificationPermission: $e")
+        }
+    }
+
+
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PERMISSION_REQUEST_CODE -> {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty() &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    // allow
+                    Log.d("body", "granted")
+                } else {
+                    //deny
+                    Log.d("permission","denied")
+                }
+                return
+            }
+        }
+    }
     }

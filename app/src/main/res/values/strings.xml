@@ -45,6 +45,7 @@
     <string name="fever">"Fever "</string>
     <string name="malaria">"Malaria "</string>
     <string name="other">"Other "</string>
+    <string name="topic_subscribed">Subscribe to Topic</string>
 
 
     <string-array name="spinner_items">

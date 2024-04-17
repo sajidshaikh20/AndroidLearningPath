@@ -10,13 +10,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.base.hilt"
         minSdkVersion 24
-        targetSdkVersion 31
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -78,7 +78,7 @@ dependencies {
     //databinding compiler
     kapt 'com.android.databinding:compiler:3.1.4'
     //crypto for encrypted shared preference
-    implementation 'androidx.security:security-crypto:1.1.0-alpha03'
+    implementation 'androidx.security:security-crypto:1.1.0-alpha01'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     //jackson parser
     def jacksonVersion = "2.12.3"

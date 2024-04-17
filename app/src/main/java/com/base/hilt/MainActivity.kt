@@ -20,6 +20,7 @@ import com.base.hilt.utils.MyPreference
 import com.base.hilt.utils.PrefKey
 import com.base.hilt.utils.Utils
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
 
         DebugLog.e("onCreate")
         binding = ActivityMainBinding.inflate(layoutInflater)
