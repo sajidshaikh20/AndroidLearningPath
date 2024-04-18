@@ -44,6 +44,7 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
 
     override fun initializeScreenVariables() {
         getDataBinding().handler = HomeHandler(this)
+
         getFCMToken()
 
         observeData()
@@ -53,7 +54,7 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
 
         //Ask for Permission in android 13
         if (Build.VERSION.SDK_INT > 32) {
-            if (!shouldShowRequestPermissionRationale("112")){
+            if (!shouldShowRequestPermissionRationale(PERMISSION_REQUEST_CODE.toString())){
                 getNotificationPermission()
             }
         }
@@ -62,6 +63,7 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
     private fun observeData() {
 
@@ -109,7 +111,6 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
                 }
                 val token = task.result
                 Log.i("Token", "getFCMToken: $token")
-
             }
     }
     fun getNotificationPermission() {

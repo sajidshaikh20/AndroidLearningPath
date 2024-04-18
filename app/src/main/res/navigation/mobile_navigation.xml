@@ -42,6 +42,11 @@
             app:popUpToInclusive="true"
             app:popUpTo="@id/splashFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_UserForm"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/splashFragment"
+            app:destination="@id/userFormFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
