@@ -52,8 +52,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 Log.d("payload", remote.data.toString())
 
                 val activityToOpen = when {
-                    title == "Title 1" && messageBody == "Message 2" -> "MainActivity"
-                    else -> "MainActivity"
+                    title == "Title 1" && messageBody == "Message 2" -> "User"
+                    else -> "nothing"
                 }
                 // generateNotification(title,messageBody,activityToOpen)
                 sendNotification(messageBody, activityToOpen, title, it)
@@ -89,10 +89,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     ) {
 
         val intent = when (activityToOpen) {
-            "MainActivity" -> {
+            "User" -> {
                 Log.i("noti_action", "sendNotification:$activityToOpen")
                 val intent=  Intent(this, MainActivity::class.java)
-                intent.putExtra(push_type, "User")
+                intent.putExtra(push_type, activityToOpen)
             }
 
             else -> Intent(this, MainActivity::class.java)

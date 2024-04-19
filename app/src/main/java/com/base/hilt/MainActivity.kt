@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.base.hilt.base.LocaleManager
@@ -22,6 +21,7 @@ import com.base.hilt.utils.PrefKey
 import com.base.hilt.utils.Utils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
-
+        FirebaseMessaging.getInstance().subscribeToTopic("learn2")
         DebugLog.e("onCreate")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

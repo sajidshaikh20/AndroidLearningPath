@@ -17,6 +17,7 @@ import com.base.hilt.ui.userForm.validator.UserFormValidator
 import com.base.hilt.ui.userForm.viewmodel.UserFormViewModel
 import com.base.hilt.utils.MyPreference
 import com.base.hilt.utils.PrefKey
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -28,8 +29,6 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
 
     @Inject
     lateinit var mPref: MyPreference
-
-
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_user_form
@@ -45,7 +44,6 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
         setupErrorHandling()
         //viewmodel collecting data
         viewModel.collectData()
-
         getDataBinding().apply {
             handler = UserFormHandler(this@UserFormFragment)
             validator = UserFormValidator()
@@ -125,6 +123,28 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
 
         return  healthIssues
     }
+    fun unsubscribeFromTopic(topic: String) {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Unsubscription successful
+                    println("Unsubscribed from topic: $topic")
+                } else {
+                    // Unsubscription failed
+                    println("Failed to unsubscribe from topic: $topic")
+                }
+            }
+    }
+    private fun subscribeToTopic(topic: String) {
+        FirebaseMessaging.getInstance().subscribeToTopic(topic)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("TAG", "Subscribed to topic: $topic")
+                } else {
+                    Log.w("TAG", "Subscription to topic $topic failed", task.exception)
+                }
+            }
+    }
 
     private fun getHealthIssue(): String {
         var checkbox = ""
@@ -141,6 +161,9 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
     }
 
     private fun clearExitFormSelection() {
+        unsubscribeFromTopic("other")
+        unsubscribeFromTopic("malaria")
+        unsubscribeFromTopic("fever")
         getDataBinding().apply {
             edtUserName.text?.clear()
             edtFullName.text?.clear()
@@ -188,12 +211,22 @@ class UserFormFragment : FragmentBase<UserFormViewModel, FragmentUserFormBinding
         }
         if (model.healthIssues.contains(getString(R.string.fever))){
             getDataBinding().checkBoxFever.isChecked = true
+            subscribeToTopic("fever")
+        }else{
+            unsubscribeFromTopic("fever")
         }
         if (model.healthIssues.contains(getString(R.string.malaria))){
             getDataBinding().checkBoxMaleria.isChecked = true
+            subscribeToTopic("malaria")
+        }else{
+            unsubscribeFromTopic("malaria")
         }
         if (model.healthIssues.contains(getString(R.string.other))){
             getDataBinding().checkBoxother.isChecked = true
+            subscribeToTopic("other")
+        }else{
+            FirebaseMessaging.getInstance().unsubscribeFromTopic("other")
+            unsubscribeFromTopic("other")
         }
         getDataBinding().spinner.setSelection(model.ageBetween.toInt())
 
