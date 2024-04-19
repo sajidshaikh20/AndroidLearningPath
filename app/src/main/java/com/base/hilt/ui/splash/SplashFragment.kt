@@ -2,14 +2,12 @@ package com.base.hilt.ui.splash
 
 import android.os.Bundle
 import android.util.Log
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.base.hilt.R
 import com.base.hilt.base.FragmentBase
 import com.base.hilt.base.ToolbarModel
 import com.base.hilt.base.ViewModelBase
 import com.base.hilt.databinding.FragmentSplashBinding
-import com.base.hilt.ui.home.HomeFragmentDirections
 import com.base.hilt.utils.Constants
 import com.base.hilt.utils.MyPreference
 import com.base.hilt.utils.PrefKey
@@ -19,6 +17,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class SplashFragment : FragmentBase<ViewModelBase, FragmentSplashBinding>() {
@@ -66,9 +65,14 @@ class SplashFragment : FragmentBase<ViewModelBase, FragmentSplashBinding>() {
         super.onResume()
         GlobalScope.launch(context = Dispatchers.Main) {
             delay(3000)
-            if (pref.getValueBoolean(PrefKey.IS_USERlOGIN, false)) {
+            val isUserLoggedIn = pref.getValueBoolean(PrefKey.IS_USERlOGIN, false)
+            Log.d("SplashFragment", "Is user logged in: " + isUserLoggedIn)
+
+            if (isUserLoggedIn) {
+                Log.i("SplashFragment", "if: isUserLoggedIn")
                 findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToNavigationHome())
             } else {
+                Log.i("SplashFragment", "else")
                 findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLogin())
             }
         }

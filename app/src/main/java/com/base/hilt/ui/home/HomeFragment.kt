@@ -17,10 +17,13 @@ import com.base.hilt.type.ChallengeListInput
 import com.base.hilt.ui.home.adapter.challengesAdapter
 import com.base.hilt.ui.home.handler.HomeHandler
 import com.base.hilt.ui.model.Challenges
+import com.base.hilt.utils.MyPreference
+import com.base.hilt.utils.PrefKey
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
@@ -36,7 +39,7 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
     }
 
     override fun setupToolbar() {
-        viewModel.setToolbarItems(ToolbarModel(true, "Home", true))
+        viewModel.setToolbarItems(ToolbarModel(true, "Home", isBottomNavVisible = true, isSetting = true))
     }
 
     override fun getViewModelClass(): Class<HomeViewModel> = HomeViewModel::class.java
@@ -60,10 +63,12 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
         }
 
     }
-
+    @Inject
+    lateinit var pref: MyPreference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val isUserLoggedIn = pref.getValueBoolean(PrefKey.IS_USERlOGIN, false)
+        Log.d("SplashFragment", "Is user logged in: $isUserLoggedIn")
     }
     private fun observeData() {
 
@@ -100,7 +105,9 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
                         }
                     }
                 }
-                }
+
+                else -> {}
+            }
             }
         }
     private fun getFCMToken() {

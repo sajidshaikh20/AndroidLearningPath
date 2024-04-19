@@ -9,8 +9,13 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.base.hilt.base.LocaleManager
 import com.base.hilt.base.ToolbarModel
@@ -21,6 +26,7 @@ import com.base.hilt.utils.PrefKey
 import com.base.hilt.utils.Utils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -31,6 +37,8 @@ class MainActivity : AppCompatActivity() {
 
     private var dialog: Dialog? = null
     private lateinit var binding: ActivityMainBinding
+    private lateinit var auth: FirebaseAuth
+
 
     @Inject
     lateinit var localeManager: LocaleManager
@@ -40,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        auth = FirebaseAuth.getInstance()
         FirebaseApp.initializeApp(this)
         FirebaseMessaging.getInstance().subscribeToTopic("learn2")
         DebugLog.e("onCreate")
@@ -61,6 +70,28 @@ class MainActivity : AppCompatActivity() {
            )*/
         //setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        binding.layToolbar.setting.setOnClickListener {
+
+            val popupMenu = PopupMenu(this, it)
+            popupMenu.inflate(R.menu.setting)
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.action_Log_out -> {
+                        // Perform the logout action here, e.g., sign out the user
+                      //  preHelper.putBoolean(Constant.PREF_IS_LOGIN, false)
+                        mPref.setValueBoolean(PrefKey.IS_USERlOGIN, false)
+                        auth.signOut()
+                        Toast.makeText(this, "logout click", Toast.LENGTH_SHORT).show()
+                        finish()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+            popupMenu.show()
+        }
     }
 
     /**
@@ -104,6 +135,11 @@ class MainActivity : AppCompatActivity() {
                 else -> {
                     binding.layToolbar.appBar.visibility = View.GONE
                 }
+            }
+            if (toolbarModel.isSetting){
+                binding.layToolbar.setting.visibility = View.VISIBLE
+            }else{
+                binding.layToolbar.setting.visibility = View.INVISIBLE
             }
 
             if (toolbarModel.isBottomNavVisible)
