@@ -69,6 +69,7 @@ class CreateAccountFragment : FragmentBase<CreateAccountViewModel, FragmentCreat
                     }
 
                 }
+                else -> {}
             }
         }
         viewModel.otpVerifyLiveData.observe(viewLifecycleOwner) {
@@ -88,6 +89,7 @@ class CreateAccountFragment : FragmentBase<CreateAccountViewModel, FragmentCreat
                     val action = CreateAccountFragmentDirections.actionCreateAccountFragmentToLoginFragment()
                     findNavController().navigate(action)
                 }
+                else -> {}
             }
         }
 
