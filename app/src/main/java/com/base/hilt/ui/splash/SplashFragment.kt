@@ -8,9 +8,14 @@ import com.base.hilt.base.FragmentBase
 import com.base.hilt.base.ToolbarModel
 import com.base.hilt.base.ViewModelBase
 import com.base.hilt.databinding.FragmentSplashBinding
+import com.base.hilt.databinding.GoogleButtonLayoutBinding
 import com.base.hilt.utils.Constants
 import com.base.hilt.utils.MyPreference
 import com.base.hilt.utils.PrefKey
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -33,11 +38,20 @@ class SplashFragment : FragmentBase<ViewModelBase, FragmentSplashBinding>() {
     override fun setupToolbar() {
         viewModel.setToolbarItems(ToolbarModel(false, null, false))
     }
+    //private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun getViewModelClass(): Class<ViewModelBase> = ViewModelBase::class.java
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
         mPushType = requireActivity().intent.getStringExtra(Constants.push_type)
 
@@ -67,12 +81,10 @@ class SplashFragment : FragmentBase<ViewModelBase, FragmentSplashBinding>() {
             delay(3000)
             val isUserLoggedIn = pref.getValueBoolean(PrefKey.IS_USERlOGIN, false)
             Log.d("SplashFragment", "Is user logged in: " + isUserLoggedIn)
-
-            if (isUserLoggedIn) {
-                Log.i("SplashFragment", "if: isUserLoggedIn")
+            val account = GoogleSignIn.getLastSignedInAccount(requireContext())
+            if (isUserLoggedIn || account != null) {
                 findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToNavigationHome())
             } else {
-                Log.i("SplashFragment", "else")
                 findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLogin())
             }
         }

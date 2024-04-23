@@ -7,6 +7,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
@@ -20,10 +21,14 @@ import androidx.navigation.ui.setupWithNavController
 import com.base.hilt.base.LocaleManager
 import com.base.hilt.base.ToolbarModel
 import com.base.hilt.databinding.ActivityMainBinding
+import com.base.hilt.ui.login.LoginFragment
 import com.base.hilt.utils.DebugLog
 import com.base.hilt.utils.MyPreference
 import com.base.hilt.utils.PrefKey
 import com.base.hilt.utils.Utils
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
@@ -32,12 +37,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private var dialog: Dialog? = null
     private lateinit var binding: ActivityMainBinding
-    private lateinit var auth: FirebaseAuth
+
+    //private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
 
 
     @Inject
@@ -48,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth = FirebaseAuth.getInstance()
+        // auth = FirebaseAuth.getInstance()
         FirebaseApp.initializeApp(this)
         FirebaseMessaging.getInstance().subscribeToTopic("learn2")
         DebugLog.e("onCreate")
@@ -61,6 +69,11 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
+
+        val fragment =
+            navHostFragment.childFragmentManager.fragments.firstOrNull { it is LoginFragment }
+        // Call revokeAccess() function if the fragment is not null
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         /*   val appBarConfiguration = AppBarConfiguration(
@@ -71,6 +84,13 @@ class MainActivity : AppCompatActivity() {
         //setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
         binding.layToolbar.setting.setOnClickListener {
 
             val popupMenu = PopupMenu(this, it)
@@ -78,15 +98,18 @@ class MainActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.action_Log_out -> {
-                        // Perform the logout action here, e.g., sign out the user
-                      //  preHelper.putBoolean(Constant.PREF_IS_LOGIN, false)
-                        mPref.setValueBoolean(PrefKey.IS_USERlOGIN, false)
-                        auth.signOut()
-                        Toast.makeText(this, "logout click", Toast.LENGTH_SHORT).show()
-                        finish()
+                        googleSignInClient.signOut().addOnCompleteListener {
+                            mPref.setValueBoolean(PrefKey.IS_USERlOGIN, false)
+                            if (fragment != null && fragment is LoginFragment) {
+                                Log.i("revoke", "revokeAccess: ")
+                              //  fragment.revokeAccess()
+                            }
+                            googleSignInClient.revokeAccess()
+                            Toast.makeText(this, "logout click", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
                         true
                     }
-
                     else -> false
                 }
             }
@@ -132,16 +155,16 @@ class MainActivity : AppCompatActivity() {
                     binding.layToolbar.appBar.visibility = View.VISIBLE
                     binding.layToolbar.toolbarTitle.text = toolbarModel.title
                 }
+
                 else -> {
                     binding.layToolbar.appBar.visibility = View.GONE
                 }
             }
-            if (toolbarModel.isSetting){
+            if (toolbarModel.isSetting) {
                 binding.layToolbar.setting.visibility = View.VISIBLE
-            }else{
+            } else {
                 binding.layToolbar.setting.visibility = View.INVISIBLE
             }
-
             if (toolbarModel.isBottomNavVisible)
                 binding.navView.visibility = View.VISIBLE
             else

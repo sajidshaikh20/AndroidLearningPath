@@ -13,15 +13,38 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         tools:context=".view.auth.LoginFragment">
-        <include
-            android:id="@+id/includeGooglebtn"
-            layout="@layout/google_button_layout"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:background="@drawable/border"
+            android:onClick="@{()->handler.googleNativeBtnClcik()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="11dp"
+                android:layout_marginRight="11dp"
+                android:background="@color/white"
+                android:src="@drawable/ic_google" />
+
+            <Button
+                android:id="@+id/signInButton"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:background="@color/blue"
+                android:clickable="false"
+                android:text="Sign up with Google"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+        </LinearLayout>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvLogin"
@@ -143,6 +166,7 @@
             android:layout_marginTop="38dp"
             android:background="@color/white"
             android:src="@drawable/ic_facebook"
+            android:onClick="@{()->handler.facebookNativebtnCLick()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgAppleIons"
             app:layout_constraintTop_toBottomOf="@+id/btnLogin" />

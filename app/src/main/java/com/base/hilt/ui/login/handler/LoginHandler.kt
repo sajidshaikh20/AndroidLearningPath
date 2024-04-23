@@ -1,9 +1,6 @@
 package com.base.hilt.ui.login.handler
 
-import android.content.Context
-import android.util.Log
 import com.base.hilt.ui.login.LoginFragment
-
 
 class LoginHandler(private val context: LoginFragment) {
 
@@ -11,6 +8,20 @@ class LoginHandler(private val context: LoginFragment) {
         context.let {
             context.apply {
                 googleLogin()
+            }
+        }
+    }
+    fun googleNativeBtnClcik(){
+        context.let {
+            context.apply {
+                googleNativeAuth ()
+            }
+        }
+    }
+    fun facebookNativebtnCLick(){
+        context.let {
+            context.apply {
+                facebookNativeAuth()
             }
         }
     }

@@ -58,8 +58,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 // generateNotification(title,messageBody,activityToOpen)
                 sendNotification(messageBody, activityToOpen, title, it)
             }
-
-
         }
     }
 

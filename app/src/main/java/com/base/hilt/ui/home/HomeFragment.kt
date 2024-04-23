@@ -28,7 +28,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
 
-    var ChallengesList: ArrayList<Challenges?> = arrayListOf()
+     var ChallengesList: ArrayList<Challenges?> = arrayListOf()
 
    private val  PERMISSION_REQUEST_CODE = 112
 
@@ -47,13 +47,11 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
 
     override fun initializeScreenVariables() {
         getDataBinding().handler = HomeHandler(this)
-
         getFCMToken()
 
         observeData()
         adapter = challengesAdapter(requireContext(), ChallengesList)
         getDataBinding().rcvActiveChalengesList.adapter = adapter
-
 
         //Ask for Permission in android 13
         if (Build.VERSION.SDK_INT > 32) {
