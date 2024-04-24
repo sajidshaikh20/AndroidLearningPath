@@ -79,10 +79,10 @@ dependencies {
     //databinding compiler
     kapt 'com.android.databinding:compiler:3.1.4'
     //crypto for encrypted shared preference
-    implementation 'androidx.security:security-crypto:1.1.0-alpha01'
+    implementation 'androidx.security:security-crypto:1.1.0-alpha06'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     //jackson parser
-    def jacksonVersion = "2.12.3"
+    def jacksonVersion = "2.13.3"
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
     implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
@@ -104,12 +104,12 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:${project.glideVersion}"
 
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     // Apollo client
     implementation("com.apollographql.apollo3:apollo-runtime:3.8.3")
     //gson
-    implementation 'com.google.code.gson:gson:2.10'
+    implementation 'com.google.code.gson:gson:2.10.1'
 
 
     //firebase

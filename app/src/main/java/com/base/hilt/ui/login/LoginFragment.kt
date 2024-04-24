@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.credentials.GetCredentialRequest
 import androidx.navigation.fragment.findNavController
 import com.apollographql.apollo3.api.Optional
 import com.base.hilt.R
@@ -19,6 +18,11 @@ import com.base.hilt.ui.login.handler.LoginHandler
 import com.base.hilt.utils.MyPreference
 import com.base.hilt.utils.PrefKey
 import com.base.hilt.utils.Validation
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -38,8 +42,10 @@ class LoginFragment : FragmentBase<LoginViewModel, FragmentLoginBinding>() {
     lateinit var pref: MyPreference
 
     private lateinit var googleSignInClient: GoogleSignInClient
-
     private lateinit var auth: FirebaseAuth
+
+    //facebook authencation
+    private lateinit var callbackManager: CallbackManager
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_login
@@ -53,6 +59,7 @@ class LoginFragment : FragmentBase<LoginViewModel, FragmentLoginBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = FirebaseAuth.getInstance()
+        callbackManager = CallbackManager.Factory.create()
     }
 
 
@@ -79,7 +86,6 @@ class LoginFragment : FragmentBase<LoginViewModel, FragmentLoginBinding>() {
                             it.response.data?.login?.data?.access_token!!
                         )
                     }
-                    val token = pref.getValueString(PrefKey.TOKEN, "")
                     pref.setValueBoolean(PrefKey.IS_USERlOGIN, true)
                     findNavController().navigate(R.id.action_Login_to_navigation_home)
                 }
@@ -135,7 +141,7 @@ class LoginFragment : FragmentBase<LoginViewModel, FragmentLoginBinding>() {
                         if (signInTask.isSuccessful) {
                             viewModel.showProgressBar(false)
                             val account = signInTask.result
-                            val email = account?.email
+                            //val email = account?.email
                             val displayName = account?.displayName
                             // You can handle the sign-in success here
                            // pref.setValueBoolean(PrefKey.IS_USERlOGIN, true)
@@ -175,9 +181,7 @@ class LoginFragment : FragmentBase<LoginViewModel, FragmentLoginBinding>() {
             .requestScopes(Scope(Scopes.PLUS_ME))
             .requestScopes(Scope(Scopes.PLUS_LOGIN))
             .build()
-
         googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
-
         val signInClient = googleSignInClient.signInIntent
         launcher.launch(signInClient)
     }
@@ -229,8 +233,35 @@ class LoginFragment : FragmentBase<LoginViewModel, FragmentLoginBinding>() {
             findNavController().navigate(R.id.action_Login_to_navigation_home)
         }
     }
-    fun facebookNativeAuth(){
+    fun facebookNativeAuth() {
         Toast.makeText(requireContext(), "Facebook", Toast.LENGTH_SHORT).show()
+        LoginManager.getInstance().logInWithReadPermissions(
+            this@LoginFragment,
+            callbackManager,
+            mutableListOf("email", "public_profile")
+        )
+
+        // Set up callback for Facebook login
+        LoginManager.getInstance().registerCallback(callbackManager, object :
+            FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult) {
+                Log.i("facebook", "onSuccess: ${result.accessToken.token}")
+                Log.i("facebook", "onSuccess: ${result.recentlyGrantedPermissions}")
+                Log.i("facebook", "onSuccess: ${result.accessToken.token}")
+                Log.i("facebook", "applicationId: ${result.accessToken.applicationId}")
+                findNavController().navigate(R.id.action_Login_to_navigation_home)
+            }
+            override fun onCancel() {
+                Toast.makeText(requireContext(), "Facebook login cancelled", Toast.LENGTH_SHORT).show()
+            }
+            override fun onError(error: FacebookException) {
+                Toast.makeText(requireContext(), "Facebook login failed", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 }
 

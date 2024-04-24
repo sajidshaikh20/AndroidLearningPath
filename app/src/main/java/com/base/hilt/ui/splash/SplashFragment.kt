@@ -12,6 +12,7 @@ import com.base.hilt.databinding.GoogleButtonLayoutBinding
 import com.base.hilt.utils.Constants
 import com.base.hilt.utils.MyPreference
 import com.base.hilt.utils.PrefKey
+import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -79,10 +80,11 @@ class SplashFragment : FragmentBase<ViewModelBase, FragmentSplashBinding>() {
         super.onResume()
         GlobalScope.launch(context = Dispatchers.Main) {
             delay(3000)
-            val isUserLoggedIn = pref.getValueBoolean(PrefKey.IS_USERlOGIN, false)
-            Log.d("SplashFragment", "Is user logged in: " + isUserLoggedIn)
             val account = GoogleSignIn.getLastSignedInAccount(requireContext())
-            if (isUserLoggedIn || account != null) {
+            val isUserLoggedIn = pref.getValueBoolean(PrefKey.IS_USERlOGIN, false)
+            Log.d("SplashFragment", "Is user logged in: $isUserLoggedIn")
+            val accessToken = AccessToken.getCurrentAccessToken()
+            if (isUserLoggedIn || account != null || accessToken!=null) {
                 findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToNavigationHome())
             } else {
                 findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLogin())

@@ -19,6 +19,8 @@ import com.base.hilt.ui.home.handler.HomeHandler
 import com.base.hilt.ui.model.Challenges
 import com.base.hilt.utils.MyPreference
 import com.base.hilt.utils.PrefKey
+import com.facebook.AccessToken
+import com.facebook.GraphRequest
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -48,16 +50,19 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
     override fun initializeScreenVariables() {
         getDataBinding().handler = HomeHandler(this)
         getFCMToken()
-
         observeData()
         adapter = challengesAdapter(requireContext(), ChallengesList)
         getDataBinding().rcvActiveChalengesList.adapter = adapter
-
         //Ask for Permission in android 13
         if (Build.VERSION.SDK_INT > 32) {
             if (!shouldShowRequestPermissionRationale(PERMISSION_REQUEST_CODE.toString())){
                 getNotificationPermission()
             }
+        }
+        val accessToken = AccessToken.getCurrentAccessToken()
+        Log.i("homeFragment", "initializeScreenVariables: $accessToken")
+        if (accessToken!=null){
+            getUserDetails(accessToken)
         }
 
     }
@@ -118,7 +123,7 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
                 Log.i("Token", "getFCMToken: $token")
             }
     }
-    fun getNotificationPermission() {
+    private fun getNotificationPermission() {
         try {
             if (Build.VERSION.SDK_INT > 32) {
                 ActivityCompat.requestPermissions(
@@ -130,8 +135,26 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
             Log.d("error", "getNotificationPermission: $e")
         }
     }
+    private fun getUserDetails(accessToken: AccessToken) {
+        val request = GraphRequest.newMeRequest(
+            accessToken
+        ) { jsonObject, _ ->
+            if (jsonObject != null) {
+                val email = jsonObject.optString("email")
+                val name = jsonObject.optString("name")
+                val profilePicUrl = jsonObject.optJSONObject("picture")?.optJSONObject("data")?.optString("url")
 
-
+                Log.i("facebook", "Email: $email, Name: $name")
+                Log.i("facebook", "$profilePicUrl")
+            } else {
+                Log.e("facebook", "Unable to retrieve user details")
+            }
+        }
+        val parameters = Bundle()
+        parameters.putString("fields", "email,name,picture.type(large)")
+        request.parameters = parameters
+        request.executeAsync()
+    }
     @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,

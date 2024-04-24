@@ -13,10 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.base.hilt.base.LocaleManager
 import com.base.hilt.base.ToolbarModel
@@ -26,12 +23,13 @@ import com.base.hilt.utils.DebugLog
 import com.base.hilt.utils.MyPreference
 import com.base.hilt.utils.PrefKey
 import com.base.hilt.utils.Utils
+import com.facebook.AccessToken
+import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -98,8 +96,14 @@ class MainActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.action_Log_out -> {
+                        // Facebook logout
+                        val accessToken = AccessToken.getCurrentAccessToken()
+                        if (accessToken != null) {
+                            Log.i("accessToken", "2: $accessToken")
+                            LoginManager.getInstance().logOut()
+                        }
+                        mPref.setValueBoolean(PrefKey.IS_USERlOGIN, false)
                         googleSignInClient.signOut().addOnCompleteListener {
-                            mPref.setValueBoolean(PrefKey.IS_USERlOGIN, false)
                             if (fragment != null && fragment is LoginFragment) {
                                 Log.i("revoke", "revokeAccess: ")
                               //  fragment.revokeAccess()
