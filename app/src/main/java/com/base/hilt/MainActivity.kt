@@ -12,6 +12,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -96,6 +97,8 @@ class MainActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.action_Log_out -> {
+
+                       // viewModel.logoutapiCall()
                         // Facebook logout
                         val accessToken = AccessToken.getCurrentAccessToken()
                         if (accessToken != null) {

@@ -82,6 +82,7 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
                 type = Optional.Present("past")
             )
         )
+//        viewModel.logoutapiCall()
 
         viewModel.challengeListLiveData.observe(viewLifecycleOwner) { it ->
             when (it) {
@@ -112,6 +113,21 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
                 else -> {}
             }
             }
+        viewModel.logoutLiveData.observe(viewLifecycleOwner){
+            when (it) {
+                is  ResponseHandler.Loading-> {
+                    viewModel.showProgressBar(false)
+                }
+                is ResponseHandler.OnFailed -> {
+                    viewModel.showProgressBar(false)
+                }
+                is ResponseHandler.OnSuccessResponse -> {
+                    viewModel.showProgressBar(false)
+                    Log.i("Home", "logout: ${it.response.data?.logout?.meta?.message_code}")
+                }
+                else -> {}
+            }
+        }
         }
     private fun getFCMToken() {
         FirebaseMessaging.getInstance().token

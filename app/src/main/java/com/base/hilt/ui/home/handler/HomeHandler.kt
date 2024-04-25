@@ -17,7 +17,8 @@ class HomeHandler(private val context: HomeFragment) {
         context.let {
             context.apply {
                 Toast.makeText(requireContext(), "crash app", Toast.LENGTH_SHORT).show()
-                throw RuntimeException("Test Crash demo") // Force a crash
+                 viewModel.logoutapiCall()
+               // throw RuntimeException("Test Crash demo") // Force a crash
             }
         }
     }
