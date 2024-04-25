@@ -8,7 +8,7 @@ import com.base.hilt.base.FragmentBase
 import com.base.hilt.base.ToolbarModel
 import com.base.hilt.databinding.FragmentGetDataBinding
 import com.base.hilt.network.ResponseHandler
-import com.base.hilt.ui.getData.data.GetUserData
+import com.base.hilt.ui.getData.data.getUserData.GetUserData
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,7 +22,6 @@ class GetDataFragment : FragmentBase<GetDataViewModel,FragmentGetDataBinding>() 
     }
 
     override fun initializeScreenVariables() {
-
         viewModel.calluserGetDataAPI()
         observeData()
     }
@@ -34,23 +33,17 @@ class GetDataFragment : FragmentBase<GetDataViewModel,FragmentGetDataBinding>() 
                 }
                 when (it) {
                     is ResponseHandler.Loading -> {
-                        // Handle loading state
+                        viewModel.showProgressBar(true)
                     }
-
                     is ResponseHandler.OnFailed -> {
                         // Handle failure state
                         viewModel.showProgressBar(false)
-                      //  httpFailedHandler(it.code, it.message, it.messageCode)
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
-
                     is ResponseHandler.OnSuccessResponse<GetUserData?> -> {
-                        // Handle success state
                         viewModel.showProgressBar(false)
-
-                        getDataBinding().helloworld.text = it.response.toString()
+                        getDataBinding().model = it.response
                         Log.i("GetData", "observeData: ${it.response}")
-
                     }
                 }
             })

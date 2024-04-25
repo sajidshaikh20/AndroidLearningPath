@@ -95,7 +95,6 @@ open class BaseRepository {
     }
 
 
-
     suspend fun <T : Any> makeAPICall(call: suspend () -> Response<ResponseData<T>>): ResponseHandler<ResponseData<T>?> {
         return withContext(Dispatchers.IO) {
             try {

@@ -1,4 +1,4 @@
-package com.base.hilt.ui.getData.data
+package com.base.hilt.ui.getData.data.getUserData
 
 
 import com.fasterxml.jackson.annotation.JsonProperty

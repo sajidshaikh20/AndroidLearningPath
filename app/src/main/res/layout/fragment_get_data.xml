@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="model"
+            type="com.base.hilt.ui.getData.data.getUserData.GetUserData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,6 +17,7 @@
             android:id="@+id/helloworld"
             android:gravity="center"
             android:layout_width="match_parent"
+            android:text="@{model.toString()}"
             android:layout_height="match_parent"
             tools:text="Hello" />
 
