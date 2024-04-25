@@ -31,7 +31,6 @@ import javax.inject.Inject
 class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
 
      var ChallengesList: ArrayList<Challenges?> = arrayListOf()
-
    private val  PERMISSION_REQUEST_CODE = 112
 
    val challengesObject = object : TypeToken<List<Challenges>>() {}.type

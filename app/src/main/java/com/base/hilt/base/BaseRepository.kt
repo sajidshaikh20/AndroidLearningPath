@@ -36,6 +36,63 @@ open class BaseRepository {
      * Manage the Response with response code to display specific response message or code.
      * @param call ApiInterface method defination to make a call and get response from generic Area.
      */
+    suspend fun <T : Any> makeAPICallBase(call: suspend () -> Response<T>): ResponseHandler<T?> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = call.invoke()
+                when {
+                    response.code() in (200..300) -> {
+                        return@withContext when (response.code()) {
+                            400 -> ResponseHandler.OnFailed(
+                                response.code(),
+                                response.message(),
+                                "0"
+                            )
+
+                            401 -> ResponseHandler.OnFailed(
+                                HttpErrorCode.UNAUTHORIZED.code,
+                                response.message(),
+                                response.code().toString()
+                            )
+
+                            else -> ResponseHandler.OnSuccessResponse(response.body())
+                        }
+                    }
+
+                    response.code() == 401 -> {
+                        return@withContext parseUnAuthorizeResponse(response.errorBody())
+                    }
+
+                    response.code() == 422 -> {
+                        return@withContext parseServerSideErrorResponse(response.errorBody())
+                    }
+
+                    response.code() == 500 -> {
+                        return@withContext ResponseHandler.OnFailed(
+                            HttpErrorCode.NOT_DEFINED.code,
+                            "",
+                            response.message()
+                        )
+                    }
+
+                    else -> {
+                        return@withContext parseUnKnownStatusCodeResponse(response.errorBody())
+                    }
+                }
+            } catch (e: Exception) {
+                DebugLog.print(e)
+                return@withContext when {
+                    e is UnknownHostException || e is ConnectionShutdownException ->
+                        ResponseHandler.OnFailed(HttpErrorCode.NO_CONNECTION.code, "", "")
+
+                    e is SocketTimeoutException || e is IOException || e is NetworkErrorException ->
+                        ResponseHandler.OnFailed(HttpErrorCode.NOT_DEFINED.code, "", "")
+
+                    else -> ResponseHandler.OnFailed(HttpErrorCode.NOT_DEFINED.code, "", "")
+                }
+            }
+        }
+    }
 
 
 

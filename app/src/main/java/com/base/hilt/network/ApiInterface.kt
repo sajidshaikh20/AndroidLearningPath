@@ -1,6 +1,8 @@
 package com.base.hilt.network
 
 import com.base.hilt.ConfigFiles
+import com.base.hilt.ui.getData.data.GetUserData
+import com.base.hilt.ui.getData.domain.repository.GetDataRepository
 import com.base.hilt.ui.notifications.model.MobileData
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -19,6 +21,7 @@ interface ApiInterface {
     @GET("https://api.restful-api.dev/objects")
     suspend fun getMobileData(): Response<MobileData>
 
-
+    @GET("https://dummyjson.com/users/1")
+    suspend fun getUserData() : Response<GetUserData>
 
 }

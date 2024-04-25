@@ -22,4 +22,12 @@ class HomeHandler(private val context: HomeFragment) {
             }
         }
     }
+    fun demoCleanBtnOnClick(){
+        context.let {
+            context.apply {
+                Toast.makeText(requireContext(), "navigate new screen", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToGetUserFragment())
+            }
+        }
+    }
 }

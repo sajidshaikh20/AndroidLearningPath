@@ -14,7 +14,10 @@
         <action
             android:id="@+id/action_HomeFragment_to_UserFromFragment"
             app:destination="@id/userFormFragment" />
-
+        <action
+            android:id="@+id/action_HomeFragment_to_GetUserFragment"
+            app:destination="@+id/getDataFragment"
+            />
     </fragment>
 
     <fragment
@@ -81,5 +84,10 @@
         android:name="com.base.hilt.ui.userForm.UserFormFragment"
         android:label="fragment_user_form"
         tools:layout="@layout/fragment_user_form" />
+    <fragment
+        android:id="@+id/getDataFragment"
+        android:name="com.base.hilt.ui.getData.presentation.GetDataFragment"
+        tools:layout="@layout/fragment_get_data"
+        android:label="GetDataFragment" />
 
 </navigation>
