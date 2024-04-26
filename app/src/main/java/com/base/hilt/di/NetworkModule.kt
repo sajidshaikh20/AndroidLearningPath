@@ -7,6 +7,8 @@ import com.base.hilt.ConfigFiles
 import com.base.hilt.network.ApiInterface
 import com.base.hilt.network.AuthorizationIntercepter
 import com.base.hilt.network.HttpHandleIntercept
+import com.base.hilt.ui.getData.data.di.MyProfileDataRepositoryModule
+import com.base.hilt.ui.getData.data.remote.ProfileApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +21,11 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
 
-@Module
+@Module(
+    includes = [
+        MyProfileDataRepositoryModule::class,
+    ]
+)
 @InstallIn(ViewModelComponent::class)
 class NetworkModule {
     /**
@@ -39,6 +45,8 @@ class NetworkModule {
     @ViewModelScoped
     fun provideApiInterface(@RetrofitStore retrofit: Retrofit): ApiInterface =
         retrofit.create(ApiInterface::class.java)
+
+
 
 
     @Provides

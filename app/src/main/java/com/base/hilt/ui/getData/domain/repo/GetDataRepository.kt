@@ -7,11 +7,11 @@ import com.base.hilt.ui.getData.data.getUserData.GetUserData
 import javax.inject.Inject
 
 
-class GetDataRepository @Inject constructor(var apiInterface: ApiInterface) :
-    BaseRepository() {
-    suspend fun getdataUser(): ResponseHandler<GetUserData?> {
-        return makeAPICallBase {
-            apiInterface.getUserData()
-        }
-    }
-}
+//class GetDataRepository @Inject constructor(var apiInterface: ApiInterface) :
+//    BaseRepository() {
+//    suspend fun getdataUser(): ResponseHandler<GetUserData?> {
+//        return makeAPICallBase {
+//            apiInterface.getUserData()
+//        }
+//    }
+//}

@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GetDataViewModel @Inject constructor(private val userProfileUseCase: GetDataUseCase) : ViewModelBase() {
+class GetDataViewModel @Inject constructor(
+    private val userProfileUseCase: GetDataUseCase) : ViewModelBase() {
 
     private val _userGetData = MutableLiveData<ResponseHandler<GetUserData?>>()
 
