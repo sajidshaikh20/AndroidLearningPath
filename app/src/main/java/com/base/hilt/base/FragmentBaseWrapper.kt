@@ -33,5 +33,4 @@ abstract class FragmentBaseWrapper : Fragment() {
             else -> somethingWentWrong(message)
         }
     }
-
 }

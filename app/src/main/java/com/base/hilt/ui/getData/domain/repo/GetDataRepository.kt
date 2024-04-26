@@ -9,7 +9,6 @@ import javax.inject.Inject
 
 class GetDataRepository @Inject constructor(var apiInterface: ApiInterface) :
     BaseRepository() {
-
     suspend fun getdataUser(): ResponseHandler<GetUserData?> {
         return makeAPICallBase {
             apiInterface.getUserData()

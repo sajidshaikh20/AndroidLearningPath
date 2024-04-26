@@ -86,7 +86,7 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
         viewModel.challengeListLiveData.observe(viewLifecycleOwner) { it ->
             when (it) {
                 is  ResponseHandler.Loading-> {
-                    viewModel.showProgressBar(false)
+                    viewModel.showProgressBar(true)
                 }
                 is ResponseHandler.OnFailed -> {
                     viewModel.showProgressBar(false)
@@ -115,13 +115,14 @@ class HomeFragment : FragmentBase<HomeViewModel, FragmentHomeBinding>() {
         viewModel.logoutLiveData.observe(viewLifecycleOwner){
             when (it) {
                 is  ResponseHandler.Loading-> {
-                    viewModel.showProgressBar(false)
+                    viewModel.showProgressBar(true)
                 }
                 is ResponseHandler.OnFailed -> {
                     viewModel.showProgressBar(false)
                 }
                 is ResponseHandler.OnSuccessResponse -> {
                     viewModel.showProgressBar(false)
+                    Log.i("Home", "observeData: ${it.response.data}")
                     Log.i("Home", "logout: ${it.response.data?.logout?.meta?.message_code}")
                 }
                 else -> {}
