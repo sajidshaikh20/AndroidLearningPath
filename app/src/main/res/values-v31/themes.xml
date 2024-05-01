@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="SplashApi" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/black</item>
+
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_branding</item>
+
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+
+        <item name="postSplashScreenTheme">@style/Theme.BaseHilt</item>
+
+<!--
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/white</item>
+-->
+
+    </style>
+
+</resources>

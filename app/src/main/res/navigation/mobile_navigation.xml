@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/splashFragment">
+    app:startDestination="@+id/loginFragment">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -40,7 +40,7 @@
         android:name="com.base.hilt.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
-    <fragment
+   <!-- <fragment
         android:id="@+id/splashFragment"
         android:name="com.base.hilt.ui.splash.SplashFragment"
         android:label="SplashFragment">
@@ -59,7 +59,7 @@
             app:destination="@id/userFormFragment"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
-    </fragment>
+    </fragment>-->
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.base.hilt.ui.mvvm_clean.presentation.login.LoginFragment"

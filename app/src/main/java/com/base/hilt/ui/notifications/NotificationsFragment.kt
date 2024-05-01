@@ -13,6 +13,7 @@ import com.base.hilt.ui.notifications.handler.NotificationsFragmentClickHandler
 import com.base.hilt.ui.notifications.model.MobileDataItem
 import com.base.hilt.utils.MyPreference
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
@@ -28,6 +29,8 @@ class NotificationsFragment : FragmentBase<NotificationsViewModel, FragmentNotif
 
     @Inject
     lateinit var mPref: MyPreference
+
+    private lateinit var job: Job
     override fun getLayoutId(): Int {
         return R.layout.fragment_notifications
     }
@@ -52,26 +55,26 @@ class NotificationsFragment : FragmentBase<NotificationsViewModel, FragmentNotif
     private fun observeData() {
 
         Log.i("NotificationsFragment", "observeData: ")
-        // Assuming this is inside a Fragment or Activity
-        lifecycleScope.launchWhenStarted {
+        job = lifecycleScope.launchWhenStarted {
             try {
                 viewModel.responseMobileDataList.onStart {
                     Log.i("NotificationsViewModel", "Onstart: ")
                 }.onCompletion {
-                        Log.i("NotificationsViewModel", "oncomplete}")
-                    }.collect {
+                    Log.i("NotificationsViewModel", "oncomplete}")
+                }.collect {
                     Log.i("NotificationsViewModel", "collect: $it")
                     if (it != null) {
-                            Log.i("NotificationsViewModel", "collect: $it")
-                            mobileData.add(it)
-                            adapter.updatedata()
-                        } else {
-                            println("Received null item")
-                        }
+                        Log.i("NotificationsViewModel", "collect: $it")
+                        mobileData.add(it)
+                        adapter.updatedata()
+                    } else {
+                        println("Received null item")
                     }
+                }
             } catch (e: Exception) {
                 // Log any exceptions that occur during collection
-                Toast.makeText(requireContext(), "$e", Toast.LENGTH_SHORT).show()
+                Log.i("exceptions", "observeData: $e")
+
             }
         }
     }
@@ -86,4 +89,9 @@ class NotificationsFragment : FragmentBase<NotificationsViewModel, FragmentNotif
 
     override fun getViewModelClass(): Class<NotificationsViewModel> =
         NotificationsViewModel::class.java
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        job.cancel()
+    }
 }

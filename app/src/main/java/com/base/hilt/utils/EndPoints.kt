@@ -5,8 +5,6 @@ object EndPoints {
 
     const val CARTS = "carts"
 
-
     const val PRODUCT = "products/{productId}"
-
 
 }

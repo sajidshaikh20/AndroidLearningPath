@@ -13,6 +13,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.base.hilt.base.LocaleManager
@@ -32,6 +35,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
@@ -53,9 +57,25 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var navHostFragment: NavHostFragment
 
+    lateinit var viewModel: MainActivityViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
+        installSplashScreen().apply {
+            //if we pass true open splash screen
+            setKeepOnScreenCondition {
+               viewModel.isLoading.value
+            }
+        }
         // auth = FirebaseAuth.getInstance()
+
+
+        //to check in main activity  calling until api calling is not success splash screen will show
+       /* viewModel.callUserDataWithFlow()
+        collectUserData()*/
+
         FirebaseApp.initializeApp(this)
         FirebaseMessaging.getInstance().subscribeToTopic("learn2")
         DebugLog.e("onCreate")
@@ -84,8 +104,6 @@ class MainActivity : AppCompatActivity() {
                 when (menuItem.itemId) {
                     R.id.action_Log_out -> {
 
-                        // viewModel.logoutapiCall()
-                        // Facebook logout
                         val accessToken = AccessToken.getCurrentAccessToken()
                         if (accessToken != null) {
                             Log.i("accessToken", "2: $accessToken")
@@ -95,7 +113,6 @@ class MainActivity : AppCompatActivity() {
                         //clear prefrence
                         mPref.setValueString(PrefKey.TOKEN, "")
                         mPref.setValueBoolean(PrefKey.IS_USERlOGIN, false)
-
 
                         googleSignInClient.signOut().addOnCompleteListener {
                             googleSignInClient.revokeAccess()
@@ -223,5 +240,24 @@ class MainActivity : AppCompatActivity() {
             overrideConfiguration.uiMode = uiMode
         }
         super.applyOverrideConfiguration(overrideConfiguration)
+    }
+
+    private fun collectUserData() {
+        lifecycleScope.launch {
+            viewModel.getData.collect {
+                if (it.isLoading) {
+                    Log.i("GetData", "Loading")
+                } else if (it.error.isNotEmpty()) {
+                    Log.e("collectUserData", "collectCategoryData Error: ${it.error}")
+                    Toast.makeText(applicationContext, it.error, Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    viewModel.showProgressBar(false)
+                    Log.i("activityresponce", "observeData: ${it.data}")
+                    Toast.makeText(applicationContext, "Go to home Screen", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+        }
     }
 }

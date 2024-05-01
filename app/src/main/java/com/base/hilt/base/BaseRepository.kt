@@ -252,22 +252,12 @@ open class BaseRepository {
         try {
             val response = call.invoke()
             when {
-                response == null -> {
-                    return ResponseHandler.OnFailed(
-                        code = HttpErrorCode.BAD_RESPONSE.code,
-                        message = HttpErrorCode.BAD_RESPONSE.message,
-                        messageCode = null,
-                    )
-                }
 
                 response.hasErrors() -> {
 
                     val errorModel = HttpCommonMethod.getErrorMessageForGraph(
                         response.errors
                     )
-
-                    //                val error = response.errors?.let { GraphQLErrors(it) }
-                    //                Log.i("madmad", "onLoginApi: here2")
                     return ResponseHandler.OnFailed(
                         code = errorModel.first,
                         message = errorModel.second,

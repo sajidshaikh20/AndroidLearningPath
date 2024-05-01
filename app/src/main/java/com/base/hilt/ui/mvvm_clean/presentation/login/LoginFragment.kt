@@ -21,6 +21,7 @@ import com.base.hilt.ui.mvvm_clean.presentation.login.validator.LoginWithCleanVa
 import com.base.hilt.utils.MyPreference
 import com.base.hilt.utils.PrefKey
 import com.base.hilt.utils.Validation
+import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -36,6 +37,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -64,6 +67,15 @@ class LoginFragment : FragmentBase<LoginViewModel, FragmentLoginBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        CoroutineScope(Dispatchers.IO).launch(context = Dispatchers.Main) {
+            val account = GoogleSignIn.getLastSignedInAccount(requireContext())
+            val isUserLoggedIn = pref.getValueBoolean(PrefKey.IS_USERlOGIN, false)
+            Log.d("SplashFragment", "Is user logged in: $isUserLoggedIn")
+            val accessToken = AccessToken.getCurrentAccessToken()
+            if (isUserLoggedIn || account != null || accessToken!=null) {
+                findNavController().navigate(LoginFragmentDirections.actionLoginToNavigationHome())
+            }
+        }
         auth = FirebaseAuth.getInstance()
         callbackManager = CallbackManager.Factory.create()
     }

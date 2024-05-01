@@ -4,14 +4,13 @@ import android.widget.Toast
 import com.base.hilt.ui.mvvm_clean.presentation.login.LoginFragment
 import com.base.hilt.ui.mvvm_clean.presentation.login.validator.LoginWithCleanValidator
 
-class LoginHandler(private val context: LoginFragment) {
-
+class LoginHandler(private val mcontext: LoginFragment) {
 
     fun loginBtnClick(loginWithCleanValidator: LoginWithCleanValidator) {
-        context.let {
-            context.apply {
+        mcontext.let {
+            mcontext.apply {
                 Toast.makeText(requireContext(), "loginbtn press", Toast.LENGTH_SHORT).show()
-                if (loginWithCleanValidator.isFormValidated(this)) {
+                if (loginWithCleanValidator.isFormValidated(mcontext)) {
                     loginBtn()
                 }
             }
@@ -19,34 +18,33 @@ class LoginHandler(private val context: LoginFragment) {
     }
 
 
-
     fun loginwithGraphql() {
-        context.let {
-            context.apply {
+        mcontext.let {
+            mcontext.apply {
                 loginGraphql()
             }
         }
     }
 
     fun googleBtnClick() {
-        context.let {
-            context.apply {
+        mcontext.let {
+            mcontext.apply {
                 googleLogin()
             }
         }
     }
 
     fun googleNativeBtnClcik() {
-        context.let {
-            context.apply {
+        mcontext.let {
+            mcontext.apply {
                 googleNativeAuth()
             }
         }
     }
 
     fun facebookNativebtnCLick() {
-        context.let {
-            context.apply {
+        mcontext.let {
+            mcontext.apply {
                 facebookNativeAuth()
             }
         }
