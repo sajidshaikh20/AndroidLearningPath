@@ -29,9 +29,7 @@ class HomeHandler(private val context: HomeFragment) {
         context.let {
             context.apply {
                 Toast.makeText(requireContext(), "navigate new screen", Toast.LENGTH_SHORT).show()
-                val isUserLoggedIn = pref.getValueBoolean(PrefKey.IS_USER_LOGIN_CLEAN, false)
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToGetUserFragment())
-
             }
         }
     }

@@ -18,9 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.base.hilt.base.LocaleManager
 import com.base.hilt.base.ToolbarModel
 import com.base.hilt.databinding.ActivityMainBinding
-import com.base.hilt.ui.dashboard.DashboardFragment
 import com.base.hilt.ui.home.HomeFragmentDirections
-import com.base.hilt.ui.notifications.NotificationsFragment
 import com.base.hilt.utils.DebugLog
 import com.base.hilt.utils.MyPreference
 import com.base.hilt.utils.PrefKey
@@ -53,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var mPref: MyPreference
 
-    lateinit var navHostFragment: NavHostFragment
+    private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,7 +95,6 @@ class MainActivity : AppCompatActivity() {
                         //clear prefrence
                         mPref.setValueString(PrefKey.TOKEN, "")
                         mPref.setValueBoolean(PrefKey.IS_USERlOGIN, false)
-                        mPref.setValueBoolean(PrefKey.IS_USER_LOGIN_CLEAN, false)
 
 
                         googleSignInClient.signOut().addOnCompleteListener {
