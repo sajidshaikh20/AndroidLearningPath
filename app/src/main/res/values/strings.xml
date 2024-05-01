@@ -53,6 +53,27 @@
     <string name="logout">Logout</string>
 
 
+    <string name="please_enter_username">Please Enter Username</string>
+    <string name="please_enter_mobile_number">Please Enter Mobile Number</string>
+    <string name="please_enter_password">Please Enter Password</string>
+    <string name="please_enter_valid_password">Please Enter A valid Password</string>
+    <string name="password">Password</string>
+    <string name="welcome_to_the_tremendous_world_of_graph_ql">Welcome to the tremendous world of Graph QL!</string>
+    <string name="please_enter_minimum_password">Please Enter Minimum 8 Character Password</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="please_enter_first_name">Please Enter first name</string>
+    <string name="please_enter_date_of_birth">Please Enter Date of birth</string>
+    <string name="please_enter_last_name">"Please Enter last name "</string>
+    <string name="mobile_number_max_length_exceeded">mobile should be of 11 characters</string>
+    <string name="password_min_length_error">min 8 characters should be there</string>
+    <string name="password_invalid_format_error">invalid password format</string>
+    <string name="please_enter_confirm_password">Please enter confirm password</string>
+    <string name="password_mismatch_error">Password and confirm password do not match</string>
+    <string name="please_enter_email">please enter email</string>
+    <string name="email_invalid_format_error">email improper</string>
+    <string name="get_product">Get Product</string>
+
+
     <string-array name="spinner_items">
         <item>Selected Item</item>
         <item>10</item>

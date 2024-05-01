@@ -4,7 +4,10 @@
     <data>
         <variable
             name="handler"
-            type="com.base.hilt.ui.login.handler.LoginHandler" />
+            type="com.base.hilt.ui.mvvm_clean.presentation.login.handler.LoginHandler" />
+        <variable
+            name="validator"
+            type="com.base.hilt.ui.mvvm_clean.presentation.login.validator.LoginWithCleanValidator" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,6 +16,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         tools:context=".view.auth.LoginFragment">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -79,9 +83,9 @@
                 android:id="@+id/etUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:maxLength="10"
+                android:inputType="textEmailAddress"
                 android:maxLines="1"
+                android:text="@={validator.username}"
                 android:textColor="@color/black" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -106,9 +110,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:text="@={validator.password}"
                 android:maxLines="1"
                 android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!--android:onClick="@{()->handler.loginBtnClick(validator)}"-->
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
@@ -116,13 +124,13 @@
             android:layout_height="44dp"
             android:layout_margin="20dp"
             android:text="Login"
+            android:onClick="@{()->handler.loginBtnClick(validator)}"
             android:textColor="@color/white"
             app:backgroundTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
-
 
         <TextView
             android:id="@+id/textGoogleSignIn"
@@ -165,8 +173,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="38dp"
             android:background="@color/white"
-            android:src="@drawable/ic_facebook"
             android:onClick="@{()->handler.facebookNativebtnCLick()}"
+            android:src="@drawable/ic_facebook"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgAppleIons"
             app:layout_constraintTop_toBottomOf="@+id/btnLogin" />

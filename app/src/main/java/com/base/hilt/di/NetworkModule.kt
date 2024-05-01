@@ -7,8 +7,10 @@ import com.base.hilt.ConfigFiles
 import com.base.hilt.network.ApiInterface
 import com.base.hilt.network.AuthorizationIntercepter
 import com.base.hilt.network.HttpHandleIntercept
-import com.base.hilt.ui.getData.data.di.MyProfileDataRepositoryModule
-import com.base.hilt.ui.getData.data.remote.ProfileApi
+import com.base.hilt.ui.mvvm_clean.data.di.GetUserDataRepositoryModule
+import com.base.hilt.ui.mvvm_clean.data.di.LoginUserRepositoryModule
+import com.base.hilt.ui.mvvm_clean.data.remote.GetUserProfileApi
+import com.base.hilt.ui.mvvm_clean.data.remote.LoginInterface
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +25,8 @@ import javax.inject.Qualifier
 
 @Module(
     includes = [
-        MyProfileDataRepositoryModule::class,
+        GetUserDataRepositoryModule::class,
+        LoginUserRepositoryModule::class
     ]
 )
 @InstallIn(ViewModelComponent::class)
@@ -46,12 +49,20 @@ class NetworkModule {
     fun provideApiInterface(@RetrofitStore retrofit: Retrofit): ApiInterface =
         retrofit.create(ApiInterface::class.java)
 
+    @Provides
+    @ViewModelScoped
+    fun profileApi(@RetrofitStore retrofit: Retrofit): GetUserProfileApi {
+        return retrofit.create(GetUserProfileApi::class.java)
+    }
 
-
+    @Provides
+    @ViewModelScoped
+    fun loginApi(@RetrofitStore retrofit: Retrofit): LoginInterface{
+        return retrofit.create(LoginInterface::class.java)
+    }
 
     @Provides
     fun provideHttpHandleIntercept(): HttpHandleIntercept = HttpHandleIntercept()
-
 
     /**
      * generate OKhttp client

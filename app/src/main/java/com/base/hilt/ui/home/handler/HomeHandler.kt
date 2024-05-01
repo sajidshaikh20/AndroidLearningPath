@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.base.hilt.ui.home.HomeFragment
 import com.base.hilt.ui.home.HomeFragmentDirections
+import com.base.hilt.utils.PrefKey
 
 class HomeHandler(private val context: HomeFragment) {
     fun formBtnOnClick() {
@@ -13,20 +14,24 @@ class HomeHandler(private val context: HomeFragment) {
             }
         }
     }
-    fun crashBtnOnClick(){
+
+    fun crashBtnOnClick() {
         context.let {
             context.apply {
                 Toast.makeText(requireContext(), "crash app", Toast.LENGTH_SHORT).show()
-                 viewModel.logoutapiCall()
-               // throw RuntimeException("Test Crash demo") // Force a crash
+                viewModel.logoutapiCall()
+                // throw RuntimeException("Test Crash demo") // Force a crash
             }
         }
     }
-    fun demoCleanBtnOnClick(){
+
+    fun demoCleanBtnOnClick() {
         context.let {
             context.apply {
                 Toast.makeText(requireContext(), "navigate new screen", Toast.LENGTH_SHORT).show()
+                val isUserLoggedIn = pref.getValueBoolean(PrefKey.IS_USER_LOGIN_CLEAN, false)
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToGetUserFragment())
+
             }
         }
     }

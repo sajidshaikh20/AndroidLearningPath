@@ -1,25 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
+            name="handler"
+            type="com.base.hilt.ui.mvvm_clean.presentation.getUserData.handle.GetDataFragmentHandler" />
+        <variable
             name="model"
-            type="com.base.hilt.ui.getData.data.getUserData.GetUserData" />
+            type="com.base.hilt.ui.mvvm_clean.data.getUserData.GetUserData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.getData.presentation.GetDataFragment">
+        tools:context=".ui.mvvm_clean.presentation.getUserData.GetDataFragment">
 
         <TextView
             android:id="@+id/helloworld"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_width="match_parent"
             android:text="@{model.toString()}"
-            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Hello" />
 
+        <include
+            android:id="@+id/userdata_layoout"
+            layout="@layout/layout_user_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvCart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_marginTop="35dp"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/getProduct"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userdata_layoout"
+            tools:listitem="@layout/feed_result_layout" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/getProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:backgroundTint="@color/black"
+            android:onClick="@{()->handler.getProductBtnOnClick()}"
+            android:text="@string/get_product"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/getLogout"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/getLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:backgroundTint="@color/black"
+            android:visibility="gone"
+            android:onClick="@{()->handler.logoutBtnOnclick()}"
+            android:text="@string/logout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/getProduct" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

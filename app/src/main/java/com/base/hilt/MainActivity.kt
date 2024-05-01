@@ -12,14 +12,15 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.base.hilt.base.LocaleManager
 import com.base.hilt.base.ToolbarModel
 import com.base.hilt.databinding.ActivityMainBinding
-import com.base.hilt.ui.login.LoginFragment
+import com.base.hilt.ui.dashboard.DashboardFragment
+import com.base.hilt.ui.home.HomeFragmentDirections
+import com.base.hilt.ui.notifications.NotificationsFragment
 import com.base.hilt.utils.DebugLog
 import com.base.hilt.utils.MyPreference
 import com.base.hilt.utils.PrefKey
@@ -46,12 +47,13 @@ class MainActivity : AppCompatActivity() {
     //private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
-
     @Inject
     lateinit var localeManager: LocaleManager
 
     @Inject
     lateinit var mPref: MyPreference
+
+    lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,28 +66,14 @@ class MainActivity : AppCompatActivity() {
 
         val navView: BottomNavigationView = binding.navView
 
-        //   val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        val navHostFragment =
+        navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
 
-        val fragment =
-            navHostFragment.childFragmentManager.fragments.firstOrNull { it is LoginFragment }
-        // Call revokeAccess() function if the fragment is not null
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        /*   val appBarConfiguration = AppBarConfiguration(
-               setOf(
-                   R.id.navigation_home, R.id.navigation_dashboard
-               )
-           )*/
-        //setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .build()
+        val gso =
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
 
         // Build a GoogleSignInClient with the options specified by gso.
         googleSignInClient = GoogleSignIn.getClient(this, gso)
@@ -98,25 +86,28 @@ class MainActivity : AppCompatActivity() {
                 when (menuItem.itemId) {
                     R.id.action_Log_out -> {
 
-                       // viewModel.logoutapiCall()
+                        // viewModel.logoutapiCall()
                         // Facebook logout
                         val accessToken = AccessToken.getCurrentAccessToken()
                         if (accessToken != null) {
                             Log.i("accessToken", "2: $accessToken")
                             LoginManager.getInstance().logOut()
                         }
+
+                        //clear prefrence
+                        mPref.setValueString(PrefKey.TOKEN, "")
                         mPref.setValueBoolean(PrefKey.IS_USERlOGIN, false)
+                        mPref.setValueBoolean(PrefKey.IS_USER_LOGIN_CLEAN, false)
+
+
                         googleSignInClient.signOut().addOnCompleteListener {
-                            if (fragment != null && fragment is LoginFragment) {
-                                Log.i("revoke", "revokeAccess: ")
-                              //  fragment.revokeAccess()
-                            }
                             googleSignInClient.revokeAccess()
                             Toast.makeText(this, "logout click", Toast.LENGTH_SHORT).show()
-                            finish()
                         }
+                        navController.navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
                         true
                     }
+
                     else -> false
                 }
             }
@@ -172,10 +163,8 @@ class MainActivity : AppCompatActivity() {
             } else {
                 binding.layToolbar.setting.visibility = View.INVISIBLE
             }
-            if (toolbarModel.isBottomNavVisible)
-                binding.navView.visibility = View.VISIBLE
-            else
-                binding.navView.visibility = View.GONE
+            if (toolbarModel.isBottomNavVisible) binding.navView.visibility = View.VISIBLE
+            else binding.navView.visibility = View.GONE
         }
     }
 
@@ -187,8 +176,7 @@ class MainActivity : AppCompatActivity() {
         DebugLog.e("attachBaseContext")
         // super.attachBaseContext(base);
         val languageCode = MyApp.applicationContext().mPref.getValueString(
-            PrefKey.SELECTED_LANGUAGE,
-            PrefKey.EN_CODE
+            PrefKey.SELECTED_LANGUAGE, PrefKey.EN_CODE
         )
         useCustomConfig(base, languageCode)?.let { super.attachBaseContext(it) }
     }
@@ -221,8 +209,7 @@ class MainActivity : AppCompatActivity() {
             context.createConfigurationContext(config)
         } else {
             val res: Resources = context.resources
-            val config =
-                Configuration(res.configuration)
+            val config = Configuration(res.configuration)
             config.locale = Locale(languageCode)
             res.updateConfiguration(config, res.displayMetrics)
             context

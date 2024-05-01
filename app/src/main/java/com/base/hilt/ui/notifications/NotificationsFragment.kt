@@ -9,9 +9,7 @@ import com.base.hilt.base.FragmentBase
 import com.base.hilt.base.LocaleManager
 import com.base.hilt.base.ToolbarModel
 import com.base.hilt.databinding.FragmentNotificationsBinding
-import com.base.hilt.network.ResponseHandler1
 import com.base.hilt.ui.notifications.handler.NotificationsFragmentClickHandler
-import com.base.hilt.ui.notifications.model.MobileData
 import com.base.hilt.ui.notifications.model.MobileDataItem
 import com.base.hilt.utils.MyPreference
 import dagger.hilt.android.AndroidEntryPoint

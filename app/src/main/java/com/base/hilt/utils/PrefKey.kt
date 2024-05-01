@@ -13,6 +13,7 @@ object PrefKey {
     const val AR_CODE = "ar"
     const val SELECTED_LANGUAGE = "selected_language"
     const val IS_USERlOGIN = "isUserLogin"
+    const val IS_USER_LOGIN_CLEAN = "is_User_Login_Clean"
     const val EMPTY = ""
 
 
