@@ -1,4 +1,8 @@
 <resources>
+    <string name="facebook_app_id">311764541767784</string>
+    <string name="fb_login_protocol_scheme">fb311764541767784</string>
+    <string name="facebook_client_token">88c34a847ea057d1059657a101245041</string>
+    <string name="don_t_have_account">Don\'t Have Account</string>
     <string name="app_name">AndroidLearningPath</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -12,5 +16,68 @@
     <string name="internal_server_error_500">Oops!! There is some problem with request. Please try again</string>
     <string name="logout_401">You have been logged out because you signed in on another device OR your account is inactive</string>
     <string name="no_internet">No Internet Connection</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_account">Create Account</string>
+    <string name="plus">+1</string>
+    <string name="default_author_name">sajid</string>
+    <string name="form">Form</string>
+    <string name="ResetTitle">Reset</string>
+    <string name="SubmitTitle">Submit</string>
+    <string name="UserNameHeading">User Details</string>
 
+
+
+    <string name="hintdob">DOB</string>
+    <string name="passwordhint">password</string>
+    <string name="ConPasswordHint">Confrim Password</string>
+    <string name="checkmale">Male</string>
+    <string name="checkFemale">Female</string>
+    <string name="hobiesTitle">Hobbies</string>
+    <string name="chessCheckBox">Chess</string>
+    <string name="cookCheckBox">Cooking</string>
+    <string name="travelCheckBox">Travel</string>
+    <string name="DanceCheckBox">Dance</string>
+    <string name="gendertitle">Gender</string>
+    <string name="nameHeading">Name :</string>
+    <string name="NumberHeading">Number:</string>
+    <string name="MailHeading">Mail:</string>
+    <string name="DobHeading">Dob:</string>
+    <string name="GenderHeading">Gender:</string>
+    <string name="HobiesHeading">Hobies:</string>
+    <string name="fragmentDemoTitle">Fragment</string>
+    <string name="fever">"Fever "</string>
+    <string name="malaria">"Malaria "</string>
+    <string name="other">"Other "</string>
+    <string name="topic_subscribed">Subscribe to Topic</string>
+    <string name="logout">Logout</string>
+
+
+    <string name="please_enter_username">Please Enter Username</string>
+    <string name="please_enter_mobile_number">Please Enter Mobile Number</string>
+    <string name="please_enter_password">Please Enter Password</string>
+    <string name="please_enter_valid_password">Please Enter A valid Password</string>
+    <string name="password">Password</string>
+    <string name="welcome_to_the_tremendous_world_of_graph_ql">Welcome to the tremendous world of Graph QL!</string>
+    <string name="please_enter_minimum_password">Please Enter Minimum 8 Character Password</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="please_enter_first_name">Please Enter first name</string>
+    <string name="please_enter_date_of_birth">Please Enter Date of birth</string>
+    <string name="please_enter_last_name">"Please Enter last name "</string>
+    <string name="mobile_number_max_length_exceeded">mobile should be of 11 characters</string>
+    <string name="password_min_length_error">min 8 characters should be there</string>
+    <string name="password_invalid_format_error">invalid password format</string>
+    <string name="please_enter_confirm_password">Please enter confirm password</string>
+    <string name="password_mismatch_error">Password and confirm password do not match</string>
+    <string name="please_enter_email">please enter email</string>
+    <string name="email_invalid_format_error">email improper</string>
+    <string name="get_product">Get Product</string>
+
+
+    <string-array name="spinner_items">
+        <item>Selected Item</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+    </string-array>
 </resources>

@@ -5,7 +5,12 @@ import com.apollographql.apollo3.network.okHttpClient
 import com.base.hilt.BuildConfig
 import com.base.hilt.ConfigFiles
 import com.base.hilt.network.ApiInterface
+import com.base.hilt.network.AuthorizationIntercepter
 import com.base.hilt.network.HttpHandleIntercept
+import com.base.hilt.ui.mvvm_clean.data.di.GetUserDataRepositoryModule
+import com.base.hilt.ui.mvvm_clean.data.di.LoginUserRepositoryModule
+import com.base.hilt.ui.mvvm_clean.data.remote.GetUserProfileApi
+import com.base.hilt.ui.mvvm_clean.data.remote.LoginInterface
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +23,12 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
 
-@Module
+@Module(
+    includes = [
+        GetUserDataRepositoryModule::class,
+        LoginUserRepositoryModule::class
+    ]
+)
 @InstallIn(ViewModelComponent::class)
 class NetworkModule {
     /**
@@ -39,16 +49,27 @@ class NetworkModule {
     fun provideApiInterface(@RetrofitStore retrofit: Retrofit): ApiInterface =
         retrofit.create(ApiInterface::class.java)
 
+    @Provides
+    @ViewModelScoped
+    fun profileApi(@RetrofitStore retrofit: Retrofit): GetUserProfileApi {
+        return retrofit.create(GetUserProfileApi::class.java)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun loginApi(@RetrofitStore retrofit: Retrofit): LoginInterface{
+        return retrofit.create(LoginInterface::class.java)
+    }
 
     @Provides
     fun provideHttpHandleIntercept(): HttpHandleIntercept = HttpHandleIntercept()
-
 
     /**
      * generate OKhttp client
      */
     @Provides
-    fun getOkHttpClient(httpHandleIntercept: HttpHandleIntercept): OkHttpClient {
+    fun getOkHttpClient(httpHandleIntercept: HttpHandleIntercept,
+        authorizationIntercepter: AuthorizationIntercepter): OkHttpClient {
         val logging = HttpLoggingInterceptor()
         if (BuildConfig.DEBUG) logging.level = HttpLoggingInterceptor.Level.BODY
         val builder = OkHttpClient.Builder()
@@ -56,6 +77,8 @@ class NetworkModule {
         builder.readTimeout(60, TimeUnit.SECONDS)
             .connectTimeout(60, TimeUnit.SECONDS)
             .addInterceptor(httpHandleIntercept)
+            .addInterceptor(authorizationIntercepter)
+            .addInterceptor(logging)
             .build()
 
         return builder.build()
@@ -64,11 +87,12 @@ class NetworkModule {
     @Provides
     fun getApolloClient(okHttpClient: OkHttpClient): ApolloClient {
         return ApolloClient.Builder()
-            .serverUrl("https://rickandmortyapi.com/graphql/")
+            .serverUrl("https://vmeapi.demo.brainvire.dev/graphql")
             .okHttpClient(okHttpClient)
             .build()
     }
-
+    @Provides
+    fun providesAuthorizationIntercept(): AuthorizationIntercepter = AuthorizationIntercepter()
 }
 
 

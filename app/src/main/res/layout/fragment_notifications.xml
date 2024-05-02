@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="handler"
+            type="com.base.hilt.ui.notifications.handler.NotificationsFragmentClickHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,8 +13,41 @@
         android:layout_height="match_parent"
         tools:context=".ui.notifications.NotificationsFragment">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvmobile"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_marginTop="35dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/btGetData"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/layout_mobile_data" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btGetData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:onClick="@{()->handler.getData()}"
+            android:text="Get All Data"
+            app:layout_constraintEnd_toStartOf="@id/btGetFilterData"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rcvmobile" />
 
-
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btGetFilterData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:onClick="@{()->handler.getFilterData()}"
+            android:text="Price Greater than 500"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btGetData"
+            app:layout_constraintTop_toTopOf="@id/btGetData"
+           />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

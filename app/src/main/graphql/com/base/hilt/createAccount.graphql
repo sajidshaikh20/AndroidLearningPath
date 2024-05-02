@@ -1,0 +1,27 @@
+mutation createAccount($input: SignUpInput!) {
+    signup(input: $input){
+        data{
+            uuid
+            first_name
+            last_name
+            email
+            mobile_number
+            otp
+            dob
+            referral_code
+            verified
+            wallet_amount
+            usable_wallet_amount
+            total_credit_amount
+            notification_settings
+            user_timezone
+            alias
+        }
+        meta{
+            status
+            message
+            message_code
+            status_code
+        }
+    }
+}

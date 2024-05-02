@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "28914452458",
+    "project_id": "learningpath-25aed",
+    "storage_bucket": "learningpath-25aed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28914452458:android:8300148ae6930dd9285493",
+        "android_client_info": {
+          "package_name": "com.base.hilt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "28914452458-7jhunniu78v43q0dufh0f3k51u5i2act.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.base.hilt",
+            "certificate_hash": "5f46b2a2d0d3430d9d0904e51818d34fc87872e9"
+          }
+        },
+        {
+          "client_id": "28914452458-fnaa2rjgpcj7mncgr1d1oorlnfpv5vhr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqmkqtxqeMQmAWaWw6ftz8Zv26_E1aEZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "28914452458-fnaa2rjgpcj7mncgr1d1oorlnfpv5vhr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

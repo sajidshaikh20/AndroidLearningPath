@@ -1,0 +1,194 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="handler"
+            type="com.base.hilt.ui.mvvm_clean.presentation.login.handler.LoginHandler" />
+        <variable
+            name="validator"
+            type="com.base.hilt.ui.mvvm_clean.presentation.login.validator.LoginWithCleanValidator" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".view.auth.LoginFragment">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:background="@drawable/border"
+            android:onClick="@{()->handler.googleNativeBtnClcik()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="11dp"
+                android:layout_marginRight="11dp"
+                android:background="@color/white"
+                android:src="@drawable/ic_google" />
+
+            <Button
+                android:id="@+id/signInButton"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:background="@color/blue"
+                android:clickable="false"
+                android:text="Sign up with Google"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Login"
+            android:textColor="@color/black"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toTopOf="@+id/tilUserName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:hint="User Name"
+            android:textColorHint="@color/black"
+            app:boxBackgroundColor="@color/white"
+            app:boxStrokeColor="@color/black"
+            app:hintTextColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@id/tilPassword"
+            app:layout_constraintStart_toStartOf="@id/tvLogin"
+            app:layout_constraintTop_toBottomOf="@+id/tvLogin">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:text="@={validator.username}"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:hint="Password"
+            android:textColorHint="@color/black"
+            app:boxBackgroundColor="@color/white"
+            app:boxStrokeColor="@color/black"
+            app:endIconMode="password_toggle"
+            app:hintTextColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@id/btnLogin"
+            app:layout_constraintStart_toStartOf="@id/tilUserName"
+            app:layout_constraintTop_toBottomOf="@+id/tilUserName">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:text="@={validator.password}"
+                android:maxLines="1"
+                android:textColor="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!--android:onClick="@{()->handler.loginBtnClick(validator)}"-->
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_margin="20dp"
+            android:text="Login"
+            android:onClick="@{()->handler.loginBtnClick(validator)}"
+            android:textColor="@color/white"
+            app:backgroundTint="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
+
+        <TextView
+            android:id="@+id/textGoogleSignIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Google login with Firebase"
+            android:textColor="@android:color/black"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toEndOf="@+id/imgGoogleIcons"
+            app:layout_constraintStart_toStartOf="@+id/imgGoogleIcons"
+            app:layout_constraintTop_toBottomOf="@+id/imgGoogleIcons" />
+
+        <ImageView
+            android:id="@+id/imgGoogleIcons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="38dp"
+            android:onClick="@{()->handler.googleBtnClick()}"
+            android:src="@drawable/ic_google"
+            app:layout_constraintEnd_toStartOf="@+id/imgAppleIons"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
+
+        <ImageView
+            android:id="@+id/imgAppleIons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="38dp"
+            android:src="@drawable/ic_mail"
+            app:layout_constraintEnd_toStartOf="@id/imgFacebookIcon"
+            app:layout_constraintStart_toEndOf="@+id/imgGoogleIcons"
+            app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
+        <ImageButton
+            android:id="@+id/imgFacebookIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="38dp"
+            android:background="@color/white"
+            android:onClick="@{()->handler.facebookNativebtnCLick()}"
+            android:src="@drawable/ic_facebook"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imgAppleIons"
+            app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/createAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:text="@string/create_account"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgFacebookIcon" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="product"
+            type="com.base.hilt.ui.mvvm_clean.data.getUserData.Carts.Cart.Product" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_50sdp"
                         android:layout_marginTop="@dimen/_25sdp"
-                        android:text="sajid shaikh"
+                        android:text="@{product.title}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14sdp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +61,7 @@
                         android:id="@+id/tvid"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="323232"
+                        android:text="@{product.id.toString()}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_9sdp"
                         app:layout_constraintStart_toStartOf="@+id/tvCardName"
@@ -68,7 +71,7 @@
                         android:id="@+id/tvSpecies"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Within 1.4 km"
+                        android:text="@{product.price.toString()}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_9sdp"
                         app:layout_constraintStart_toStartOf="@+id/tvid"
@@ -79,16 +82,12 @@
                         android:id="@+id/tvGender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Coffee | Business | Freindship"
+                        android:text="@{product.discountedPrice.toString()}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_8sdp"
                         app:layout_constraintStart_toStartOf="@+id/tvid"
                         app:layout_constraintTop_toBottomOf="@+id/tvSpecies" />
-
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
             </com.google.android.material.card.MaterialCardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -109,6 +108,7 @@
                 android:elevation="@dimen/_2sdp"
                 android:src="@drawable/ic_launcher_background"
                 android:visibility="visible"
+                app:imageUrl="@{product.thumbnail}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

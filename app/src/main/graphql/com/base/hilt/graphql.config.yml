@@ -4,7 +4,7 @@
   “extensions”: {
     “endpoints”: {
       “Default GraphQL Endpoint”: {
-        “url”: “https://rickandmortyapi.com/graphql",
+        “url”: “https://vmeapi.demo.brainvire.dev/graphql",
         “headers”: {
           “user-agent”: “JS GraphQL”
         },

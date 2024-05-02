@@ -1,0 +1,10 @@
+mutation logout{
+    logout {
+        meta {
+            message
+            message_code
+            status_code
+            status
+        }
+    }
+}

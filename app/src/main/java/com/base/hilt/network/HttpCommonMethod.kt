@@ -1,7 +1,9 @@
 package com.base.hilt.network
 
 import com.apollographql.apollo3.api.Error
+import com.base.hilt.MyApp
 import com.base.hilt.utils.Constants
+import com.base.hilt.utils.PrefKey
 import com.base.hilt.utils.Validation
 import com.fasterxml.jackson.databind.JsonNode
 
@@ -55,6 +57,13 @@ object HttpCommonMethod {
         return message.replace("[\"", "").replace("\"]", "").replace(".", "")
     }
 
+    fun getAuthToken(): String {
+        return if (MyApp.applicationContext().mPref.getValueString(PrefKey.TOKEN, "").isNullOrEmpty()) {
+            ""
+        } else {
+            "Bearer " + MyApp.applicationContext().mPref.getValueString(PrefKey.TOKEN, "")
+        }
+    }
     private const val AUTHORIZATION = "authentication"
     private const val RESPONSE_CATEGORY = "category"
     private const val META = "meta"

@@ -1,249 +1,1089 @@
-type Query {
-  """
-  Get a specific character by ID
-  """
-  character("" id: ID!): Character
-
-  """
-  Get the list of all characters
-  """
-  characters("" page: Int, "" filter: FilterCharacter): Characters
-
-  """
-  Get a list of characters selected by ids
-  """
-  charactersByIds("" ids: [ID!]!): [Character]
-
-  """
-  Get a specific locations by ID
-  """
-  location("" id: ID!): Location
-
-  """
-  Get the list of all locations
-  """
-  locations("" page: Int, "" filter: FilterLocation): Locations
-
-  """
-  Get a list of locations selected by ids
-  """
-  locationsByIds("" ids: [ID!]!): [Location]
-
-  """
-  Get a specific episode by ID
-  """
-  episode("" id: ID!): Episode
-
-  """
-  Get the list of all episodes
-  """
-  episodes("" page: Int, "" filter: FilterEpisode): Episodes
-
-  """
-  Get a list of episodes selected by ids
-  """
-  episodesByIds("" ids: [ID!]!): [Episode]
-}
-
-type Character {
-  """
-  The id of the character.
-  """
-  id: ID
-
-  """
-  The name of the character.
-  """
-  name: String
-
-  """
-  The status of the character ('Alive', 'Dead' or 'unknown').
-  """
-  status: String
-
-  """
-  The species of the character.
-  """
-  species: String
-
-  """
-  The type or subspecies of the character.
-  """
-  type: String
-
-  """
-  The gender of the character ('Female', 'Male', 'Genderless' or 'unknown').
-  """
-  gender: String
-
-  """
-  The character's origin location
-  """
-  origin: Location
-
-  """
-  The character's last known location
-  """
-  location: Location
-
-  """
-  Link to the character's image.
-  All images are 300x300px and most are medium shots or portraits since they are intended to be used as avatars.
-  """
-  image: String
-
-  """
-  Episodes in which this character appeared.
-  """
-  episode: [Episode]!
-
-  """
-  Time at which the character was created in the database.
-  """
-  created: String
-}
-
-type Location {
-  """
-  The id of the location.
-  """
-  id: ID
-
-  """
-  The name of the location.
-  """
-  name: String
-
-  """
-  The type of the location.
-  """
-  type: String
-
-  """
-  The dimension in which the location is located.
-  """
-  dimension: String
-
-  """
-  List of characters who have been last seen in the location.
-  """
-  residents: [Character]!
-
-  """
-  Time at which the location was created in the database.
-  """
-  created: String
-}
-
-type Episode {
-  """
-  The id of the episode.
-  """
-  id: ID
-
-  """
-  The name of the episode.
-  """
-  name: String
-
-  """
-  The air date of the episode.
-  """
-  air_date: String
-
-  """
-  The code of the episode.
-  """
-  episode: String
-
-  """
-  List of characters who have been seen in the episode.
-  """
-  characters: [Character]!
-
-  """
-  Time at which the episode was created in the database.
-  """
-  created: String
-}
-
-input FilterCharacter {
-  name: String
-
-  status: String
-
-  species: String
-
-  type: String
-
-  gender: String
-}
-
-type Characters {
-  info: Info
-
-  results: [Character]
-}
-
-type Info {
-  """
-  The length of the response.
-  """
-  count: Int
-
-  """
-  The amount of pages.
-  """
-  pages: Int
-
-  """
-  Number of the next page (if it exists)
-  """
-  next: Int
-
-  """
-  Number of the previous page (if it exists)
-  """
-  prev: Int
-}
-
-input FilterLocation {
-  name: String
-
-  type: String
-
-  dimension: String
-}
-
-type Locations {
-  info: Info
-
-  results: [Location]
-}
-
-input FilterEpisode {
-  name: String
-
-  episode: String
-}
-
-type Episodes {
-  info: Info
-
-  results: [Episode]
-}
-
-enum CacheControlScope {
-  PUBLIC
-
-  PRIVATE
-}
-
-"""
-The `Upload` scalar type represents a file upload.
-"""
-scalar Upload
+# This file was generated based on ".graphqlconfig". Do not edit manually.
 
 schema {
   query: Query
+  mutation: Mutation
+}
+
+type ActiveUsersResponse {
+  data: [users]!
+  meta: Meta!
+  paginatorInfo: customPagination
+}
+
+type AddCommentResponse {
+  data: Comment!
+  meta: Meta!
+}
+
+type BlockUsers {
+  data: [users]!
+  meta: Meta!
+  paginatorInfo: customPagination
+}
+
+type Comment {
+  comment_count_text: String
+  comment_description: String
+  comment_like_count: Int
+  comment_media_name: String
+  comment_media_type: String
+  comment_media_url: String
+  created_at: String
+  created_at_format: String
+  firstReply: [commentReply]
+  id: Int
+  is_author: Boolean
+  is_liked: Boolean
+  is_reported: Boolean
+  total_replies: Int
+  userDetails: users
+  uuid: String
+}
+
+type CommentCountText {
+  comment_count_text: String
+}
+
+type CommentInfo {
+  data: [Comment]
+  meta: Meta!
+  pagination: CommentPagination
+}
+
+type CommentPagination {
+  comment_id: Int
+  comment_uuid: String
+  first: Int
+  page: Int
+  total_count: Int
+}
+
+type ConfigurationData {
+  key: String
+  value: String
+}
+
+type ConfigurationResponse {
+  data: allSettings
+  meta: Meta!
+}
+
+type DeleteChallengeCommentResponse {
+  data: CommentCountText
+  meta: Meta!
+}
+
+type Faq {
+  answer: String!
+  question: String!
+  sort_order: Int!
+  status: String!
+  uuid: String
+}
+
+type FaqListResponse {
+  data: [Faq]!
+  meta: Meta!
+}
+
+type ForgotPasswordResponse {
+  data: forgotPasswordData
+  meta: Meta!
+}
+
+type LikeChallengeCommentListResponse {
+  data: [users!]!
+  meta: Meta
+  paginatorInfo: customPagination
+}
+
+type LoginData {
+  access_token: String!
+  expires_in: String!
+  refresh_token: String!
+  token_type: String!
+  user: users
+}
+
+type LogoutResponse {
+  meta: Meta!
+}
+
+type Meta {
+  message: String!
+  message_code: String!
+  status: Boolean!
+  status_code: Int!
+}
+
+type Mutation {
+  DeleteChallengeComment(input: DeleteChallengeCommentInput!): DeleteChallengeCommentResponse!
+  EditProfile(input: UpdateInputs!): UpdateProfileResponse!
+  UpdateUserNotificationSettings(input: UpdateNotificationInput!): UpdateNotificationResponse!
+  acceptRejectChallenge(input: acceptChallengeInput!): acceptChallengeResponse!
+  addAmountManually(input: addCredit!): addCreditResponse!
+  addComment(input: AddComment!): AddCommentResponse!
+  addCredit: addCreditResponse!
+  addPaymentMethod(input: addPaymentMethodInput!): addPaymentMethodResponse!
+  blockUnblockUser(input: blockUnblockInput!): blockUnblockResponse!
+  challengeCommentReport(input: challengeCommentReportInput!): challengeCommentReportResponse!
+  challengeModification(input: challengeModificationInput!): challengeModificationResponse!
+  challengeReport(input: challengeReportInput!): challengeReportResponse!
+  changePassword(input: updatePasswordInput!): UpdatePasswordResponse!
+  contactUs(input: contactUsInput!): contactUsResponse!
+  deleteUser: deleteUserResponse!
+  editChallenge(input: editChallengeInput!): editChallengeResponse!
+  endChallenge(input: endChallengeInput!): endChallengeResponse!
+  forgotPassword(input: ForgotPasswordInput!): ForgotPasswordResponse!
+  generateTxnId(input: txnIdInput!): generateTxnResponse!
+  likeChallengeComment(input: LikeCommentInput!): likeChallengeResponse!
+  login(input: LoginInput!): loginResponse!
+  logout: LogoutResponse!
+  markAllNotificationRead(input: markAllNotificationReadInput!): markAllNotificationReadResponse!
+  markNotificationRead(input: markNotificationReadInput!): markNotificationReadResponse!
+  resendSmsOtp(input: ResendSmsOtpInput!): ResendSmsOtpResponse!
+  resetPassword(input: ResetPasswordInput!): ResetPasswordResponse!
+  selectWinner(input: selectWinnerInput!): selectWinnerResponse!
+  signup(input: SignUpInput!): SignUpResponse!
+  transferWalletAmount(input: transferWalletAmount!): transferWalletAmountResponse!
+  updateCommentUnReadCount(input: UpdateCount!): UpdateCountResponse!
+  updateEmail(input: SendOtpEmailInput!): OtpEmailResponse!
+  updateMobileNum(input: SendOtpNumInput!): OtpMobileNumResponse!
+  userCreditTxn(input: UserCreditTxnInput!): UserCreditTxnResponse!
+  userWalletTxn(input: UserWalletTxnInput!): UserWalletTxnResponse!
+  verifySmsOtp(input: OtpInput!): VerificationResponse!
+  withdrawWalletAmount(input: withdrawWalletAmount!): withdrawWalletAmountResponse!
+  withdrawWalletAmountManually(input: withdrawWalletAmountManually!): withdrawWalletAmountManuallyResponse!
+}
+
+type OtpEmailResponse {
+  data: editEmailData
+  meta: Meta!
+}
+
+type OtpMobileNumResponse {
+  data: editMobileNumData
+  meta: Meta!
+}
+
+"Information about pagination using a Relay style cursor connection."
+type PageInfo {
+  "Number of nodes in the current page."
+  count: Int!
+  "Index of the current page."
+  currentPage: Int!
+  "The cursor to continue paginating forwards."
+  endCursor: String
+  "When paginating forwards, are there more items?"
+  hasNextPage: Boolean!
+  "When paginating backwards, are there more items?"
+  hasPreviousPage: Boolean!
+  "Index of the last available page."
+  lastPage: Int!
+  "The cursor to continue paginating backwards."
+  startCursor: String
+  "Total number of nodes in the paginated connection."
+  total: Int!
+}
+
+"Information about pagination using a fully featured paginator."
+type PaginatorInfo {
+  "Number of items in the current page."
+  count: Int!
+  "Index of the current page."
+  currentPage: Int!
+  "Index of the first item in the current page."
+  firstItem: Int
+  "Are there more pages after this one?"
+  hasMorePages: Boolean!
+  "Index of the last item in the current page."
+  lastItem: Int
+  "Index of the last available page."
+  lastPage: Int!
+  "Number of items per page."
+  perPage: Int!
+  "Number of total available items."
+  total: Int!
+}
+
+type Query {
+  Configuration(app_version: String!, device_type: Int!, version_code: String!): ConfigurationResponse
+  #    Configuration: ConfigurationResponse
+  Faq: FaqListResponse
+  LikeChallengeCommentList(input: LikeChallengeCommentListInput!): LikeChallengeCommentListResponse!
+  UserData: UserDataResponse!
+  activeUsersList(input: ActiveUsersInput): ActiveUsersResponse!
+  blockUserList(input: BlockUserInput): BlockUsers!
+  challengeDetail(input: challengeDetailsInput!): challengeDetailsResponse!
+  challengeList(input: challengeListInput!): challengeListResponse!
+  challengeListingCount: challengeListCountResponse!
+  getCommentData(input: CommentPaginationInput!): CommentInfo
+  getOpponentUser(input: opponentInput!): opponentResponse
+  notficationsList(input: notificationListInput!): notificationListResponse!
+  participantsList(input: participantsListInput!): participantsListResponse!
+  paymentMethodList: paymentListResponse!
+  unreadNotificationCount: unreadNotificationListCountResponse!
+}
+
+type ResendSmsOtpResponse {
+  data: resendSmsOtpData
+  meta: Meta!
+}
+
+type ResetPasswordResponse {
+  meta: Meta!
+}
+
+type SignUpResponse {
+  data: signupData
+  meta: Meta!
+}
+
+"Information about pagination using a simple paginator."
+type SimplePaginatorInfo {
+  "Number of items in the current page."
+  count: Int!
+  "Index of the current page."
+  currentPage: Int!
+  "Index of the first item in the current page."
+  firstItem: Int
+  "Are there more pages after this one?"
+  hasMorePages: Boolean!
+  "Index of the last item in the current page."
+  lastItem: Int
+  "Number of items per page."
+  perPage: Int!
+}
+
+type TransactionUser {
+  user: users
+  user_id: Int
+}
+
+type UpdateCountResponse {
+  meta: Meta!
+}
+
+type UpdateNotificationResponse {
+  data: userSettingsData
+  meta: Meta!
+}
+
+type UpdatePasswordResponse {
+  meta: Meta!
+}
+
+type UpdateProfileResponse {
+  meta: Meta!
+}
+
+type User {
+  id: ID
+}
+
+type UserCreditTxnData {
+  amount: String
+  challenge: challenges
+  created_at: String
+  created_at_format: String
+  status: Int
+  status_str: String
+  subtype: Int
+  type: Int
+  updated_at: String
+  updated_at_format: String
+  url: String
+  uuid: String
+}
+
+type UserCreditTxnResponse {
+  data: [UserCreditTxnData]!
+  meta: Meta!
+  pagination: UserTxnPagination
+}
+
+type UserDataResponse {
+  data: users
+  meta: Meta!
+}
+
+type UserTxnPagination {
+  first: Int
+  page: Int
+  total_count: Int
+}
+
+type UserWalletTxnData {
+  amount: String
+  amount_format: String
+  challenge: challenges
+  created_at: String
+  created_at_format: String
+  payment_method_id: Int
+  payment_txn_id: String
+  status: Int
+  status_str: String
+  subtype: Int
+  transactionUser: [TransactionUser]
+  txn_id: String
+  type: Int
+  updated_at: String
+  updated_at_format: String
+  url: String
+  uuid: String
+}
+
+type UserWalletTxnResponse {
+  data: [UserWalletTxnData]!
+  meta: Meta!
+  pagination: UserTxnPagination
+}
+
+type VerificationResponse {
+  data: otpData
+  meta: Meta!
+}
+
+type acceptChallengeResponse {
+  data: challenges
+  meta: Meta!
+}
+
+type addCreditResponse {
+  data: users
+  meta: Meta!
+}
+
+type addPaymentMethodResponse {
+  data: [userPaymentMethods]
+  meta: Meta!
+}
+
+type allSettings {
+  abuse_report_categories: [categoryArray]
+  credit_conversion_rate: String
+  deposit_percentage_charge: String
+  force_updates: forceUpdate
+  max_active_challenges_per_user: String
+  max_add_amount_to_wallet: String
+  max_challenge_amount: String
+  max_wallet_amount_transfer_between_two_users_wallet: String
+  max_withdrawl_amount_from_wallet: String
+  min_add_amount_to_wallet: String
+  min_wallet_amount_transfer_between_two_user: String
+  min_withdrawl_amount_from_wallet: String
+  notification_settings: String
+  support_categories: [categoryArray]
+  withdrawal_disclaimer_text: String
+  withdrawal_percentage_charge: String
+}
+
+type blockUnblockResponse {
+  meta: Meta!
+}
+
+type categoryArray {
+  cat_type: Int!
+  id: Int!
+  name: String!
+  order: Int!
+}
+
+type challengeCommentReportResponse {
+  meta: Meta!
+}
+
+type challengeCountResponse {
+  activeChallengeCount: String
+  inviteChallengeCount: String
+  pastChallengeCount: String
+  user: users
+}
+
+type challengeDetailsResponse {
+  data: challenges
+  meta: Meta
+}
+
+type challengeListCountResponse {
+  data: challengeCountResponse
+  meta: Meta!
+}
+
+type challengeListResponse {
+  data: [challenges!]!
+  meta: Meta
+  paginatorInfo: customPagination
+}
+
+type challengeModificationResponse {
+  data: challenges
+  meta: Meta!
+}
+
+type challengeReportResponse {
+  meta: Meta!
+}
+
+type challenges {
+  accept_by: String
+  actualAmount: String
+  actualJackpotAmount: String
+  allow_to_edit: String
+  amount: String
+  author: users
+  challenge_status: String
+  comment_count_text: String
+  comment_unread_count: Int
+  current_date: String
+  description: String
+  end_at: String
+  external_invites_challenge: [getExternalInvites]
+  image: [String]
+  invitation_status_label: String
+  invite_status: String
+  is_author: Boolean
+  is_comments_expired: Boolean
+  is_ended: Boolean
+  is_judge: Boolean
+  is_participant: Boolean
+  is_reported: Boolean
+  is_spectator: Boolean
+  is_winner: Boolean
+  jackpot_amount: String
+  judge: users
+  modification_request: modification_request
+  other_declined: Boolean
+  participants: [users]
+  start_at: String
+  status: String
+  timestamp: String
+  title: String
+  total_participants: Int
+  total_spectators: Int
+  type: String
+  uuid: String
+  winner: users
+  winner_declare_at: String
+  winner_declare_by: String
+}
+
+type commentReply {
+  comment_description: String
+  comment_like_count: Int
+  comment_media_name: String
+  comment_media_type: String
+  comment_media_url: String
+  created_at: String
+  created_at_format: String
+  id: Int
+  is_author: Boolean
+  is_liked: Boolean
+  is_reported: Boolean
+  userDetails: users
+  uuid: String
+}
+
+type contactUsResponse {
+  meta: Meta!
+}
+
+type customPagination {
+  currentPage: Int
+  nextPage: Int
+  perPage: Int
+  previousPage: Int
+  totalPages: Int
+  totalRecords: Int
+  type: String
+}
+
+type deleteUserResponse {
+  meta: Meta!
+}
+
+type editChallengeResponse {
+  data: challenges
+  meta: Meta!
+}
+
+type editEmailData {
+  otp: String
+}
+
+type editMobileNumData {
+  otp: String
+}
+
+type endChallengeResponse {
+  data: challenges
+  meta: Meta!
+}
+
+type forceUpdate {
+  force_update: Int!
+  link: String
+  message: String!
+}
+
+type forgotPasswordData {
+  alias: String
+  email: String
+  first_name: String
+  last_name: String
+  mobile_number: String
+  otp: String
+  uuid: String
+}
+
+type generateTxnResponse {
+  data: String
+  meta: Meta!
+}
+
+type getExternalInvites {
+  mobile_number: String
+  name: String
+  status: String
+}
+
+type likeChallengeResponse {
+  meta: Meta!
+}
+
+type loginResponse {
+  data: LoginData!
+  meta: Meta!
+}
+
+type markAllNotificationReadResponse {
+  meta: Meta!
+}
+
+type markNotificationReadResponse {
+  meta: Meta!
+}
+
+type modification_request {
+  action_on: String
+  actualAmount: String
+  amount: String
+  amount_approved: Int
+  challenge_id: Int
+  description: String
+  description_approved: Int
+  end_at: String
+  end_at_approved: Int
+  invitation_accept_date: String
+  invitation_accept_date_approved: Int
+  judge: users
+  judge_id_approved: Int
+  status: Int
+  uuid: String
+}
+
+type my {
+  id: ID
+}
+
+type notificationListResponse {
+  data: [notifications!]!
+  meta: Meta
+  paginatorInfo: customPagination
+}
+
+type notifications {
+  action_uuid: String
+  ago: String
+  content: String
+  created_at: String
+  image: String
+  push_type: String
+  read: Int
+  title: String
+  type: String
+  uuid: String
+}
+
+type opponentResponse {
+  data: users!
+  meta: Meta!
+}
+
+type opponentUser {
+  avatar: String
+  dob: String
+  email: String
+  first_name: String
+  is_blocked: Int
+  last_name: String
+  mobile_number: String!
+  referral_code: String
+  uuid: String
+  verified: String
+}
+
+type otpData {
+  access_token: String
+  password_reset_token: String
+  user: users
+}
+
+type participants {
+  invitation_status: String
+  is_author: Boolean
+  is_judge: Boolean
+  is_spectator: Boolean
+  is_winner: Boolean
+  participant: users
+  uuid: String
+}
+
+type participantsListResponse {
+  challenge: challenges
+  data: [participants!]!
+  meta: Meta
+  paginatorInfo: customPagination
+}
+
+type paymentListResponse {
+  data: [paymentMethod]
+  meta: Meta
+}
+
+type paymentMethod {
+  api_data: String
+  id: String
+  key: String
+  title: String
+  uuid: String
+}
+
+type resendSmsOtpData {
+  otp: String
+  uuid: String
+}
+
+type selectWinnerResponse {
+  data: challenges
+  meta: Meta!
+}
+
+type signupData {
+  alias: String
+  chat_jwt_token: String
+  dob: String
+  email: String
+  first_name: String
+  last_name: String
+  mobile_number: String
+  notification_settings: String
+  otp: String
+  referral_code: String
+  total_credit_amount: String
+  usable_wallet_amount: String
+  user_timezone: String
+  uuid: String
+  verified: String
+  wallet_amount: String
+}
+
+type transferWalletAmountResponse {
+  data: users
+  meta: Meta!
+}
+
+type unreadNotificationCountResponse {
+  notificationCount: Int
+}
+
+type unreadNotificationListCountResponse {
+  data: unreadNotificationCountResponse
+  meta: Meta!
+}
+
+type userPaymentMethods {
+  api_data: String
+  payment_method: paymentMethod
+  uuid: String
+}
+
+type userSettingsData {
+  notification_settings: String
+}
+
+type users {
+  alias: String
+  avatar: String
+  avatar_list_url: String
+  chat_group_id: String
+  chat_id: String
+  chat_jwt_token: String
+  deleted_at: String
+  dob: String
+  email: String
+  email_verified_at: String
+  first_name: String
+  id: Int
+  invite_status: String
+  is_blocked: String
+  last_name: String
+  mobile_number: String
+  notification_settings: String
+  original_avatar: String
+  referral_code: String
+  status: String
+  total_credit_amount: String
+  usable_credit_amount: Float
+  usable_wallet_amount: String
+  user_timezone: String
+  uuid: String
+  verified: String
+  wallet_amount: String
+}
+
+type withdrawWalletAmountManuallyResponse {
+  data: users
+  meta: Meta!
+}
+
+type withdrawWalletAmountResponse {
+  data: users
+  meta: Meta!
+}
+
+"Aggregate functions when ordering by a relation without specifying a column."
+enum OrderByRelationAggregateFunction {
+  "Amount of items."
+  COUNT
+}
+
+"Aggregate functions when ordering by a relation that may specify a column."
+enum OrderByRelationWithColumnAggregateFunction {
+  "Average."
+  AVG
+  "Amount of items."
+  COUNT
+  "Maximum."
+  MAX
+  "Minimum."
+  MIN
+  "Sum."
+  SUM
+}
+
+"Directions for ordering a list of records."
+enum SortOrder {
+  "Sort records in ascending order."
+  ASC
+  "Sort records in descending order."
+  DESC
+}
+
+"Specify if you want to include or exclude trashed results from a query."
+enum Trashed {
+  "Only return trashed results."
+  ONLY
+  "Return both trashed and non-trashed results."
+  WITH
+  "Only return non-trashed results."
+  WITHOUT
+}
+
+"A JSON Object"
+scalar JSON
+
+input ActiveUsersInput {
+  first: Int
+  page: Int
+  searchValue: String
+}
+
+input AddComment {
+  challenge_uuid: String
+  child_comment_uuid: String
+  comment_description: String
+  comment_media_name: String
+  comment_media_type: String
+  parent_comment_uuid: String
+}
+
+input BlockUserInput {
+  first: Int
+  page: Int
+  searchValue: String
+}
+
+input CommentPaginationInput {
+  challenge_uuid: String
+  comment_uuid: String
+  first: Int
+  last_comment_id: Int
+  page: Int
+}
+
+input DeleteChallengeCommentInput {
+  commentUuid: String
+}
+
+input ForgotPasswordInput {
+  mobile_number: String
+  type: String
+}
+
+input LikeChallengeCommentListInput {
+  commentUuid: String
+  first: Int
+  page: Int
+}
+
+input LikeCommentInput {
+  commentUuid: String
+  like: Boolean!
+}
+
+input LoginInput {
+  device_id: String
+  device_type: String
+  ip_address: String
+  password: String!
+  phone: String!
+  user_timezone: String
+}
+
+"Allows ordering a list of records."
+input OrderByClause {
+  "The column that is used for ordering."
+  column: String!
+  "The direction that is used for ordering."
+  order: SortOrder!
+}
+
+input OtpInput {
+  email: String
+  mobile_number: String
+  otp: String
+  type: String
+  uuid: String
+}
+
+input ResendSmsOtpInput {
+  email: String
+  mobile_number: String
+  type: String
+}
+
+input ResetPasswordInput {
+  confirm_password: String
+  mobile_number: String
+  password: String
+  password_reset_token: String
+}
+
+input SendOtpEmailInput {
+  email: String!
+}
+
+input SendOtpNumInput {
+  mobile_number: String!
+}
+
+input SignUpInput {
+  alias: String
+  confirm_password: String
+  device_id: String
+  device_type: String
+  dob: String
+  email: String
+  first_name: String
+  ip_address: String
+  last_name: String
+  mobile_number: String
+  password: String
+  referral_code: String
+  user_timezone: String
+}
+
+input UpdateCount {
+  challenge_uuid: String
+}
+
+input UpdateInputs {
+  alias: String
+  dob: String!
+  first_name: String!
+  last_name: String!
+}
+
+input UpdateNotificationInput {
+  notification_settings: String
+}
+
+input UserCreditTxnInput {
+  download_file: Boolean
+  filter: String
+  first: Int
+  from_value: String
+  last_uuid: String
+  operation: String
+  page: Int
+  to_value: String
+}
+
+input UserWalletTxnInput {
+  download_file: Boolean
+  filter: String
+  first: Int
+  from_value: String
+  last_uuid: String
+  operation: String
+  page: Int
+  to_value: String
+}
+
+input acceptChallengeInput {
+  status: Int
+  uuid: String
+}
+
+input addCredit {
+  amount: String
+}
+
+input addPaymentMethodInput {
+  check_address: String
+  check_city: String
+  check_postalcode: String
+  check_state: String
+  paypal_email: String
+  venmo_user_id: String
+}
+
+input blockUnblockInput {
+  block_type: String!
+  blocker_id: String!
+  chat_group_id: String!
+}
+
+input challengeCommentReportInput {
+  abuse_cat_id: Int
+  challenge_comment_uuid: String
+  description: String
+}
+
+input challengeDetailsInput {
+  uuid: String!
+}
+
+input challengeListInput {
+  created_at: String
+  first: Int
+  isprevious: Boolean
+  page: Int
+  query: String
+  type: String
+}
+
+input challengeModificationInput {
+  accept_by: String
+  accept_by_modified: Int
+  amount: String
+  description: String
+  end_at: String
+  end_at_modified: Int
+  judge_id: String
+  uuid: String
+}
+
+input challengeReportInput {
+  abuse_cat_id: Int!
+  challenge_id: String!
+  desc: String
+}
+
+input contactUsInput {
+  description: String!
+  email: String!
+  mobile_number: String!
+  name: String!
+  subject: String!
+}
+
+input editChallengeInput {
+  accept_by: String
+  accept_by_modified: Int
+  amount: String
+  amount_approved: Int
+  description: String
+  description_approved: Int
+  end_at: String
+  end_at_approved: Int
+  end_at_modified: Int
+  invitation_accept_date_approved: Int
+  judge_id: String
+  judge_id_approved: Int
+  uuid: String
+}
+
+input endChallengeInput {
+  uuid: String
+}
+
+input markAllNotificationReadInput {
+  status: Int
+}
+
+input markNotificationReadInput {
+  status: Int
+  uuid: String
+}
+
+input notificationListInput {
+  first: Int
+  page: Int
+}
+
+input opponentInput {
+  uuid: String!
+}
+
+input participantsListInput {
+  first: Int
+  keyword: String
+  page: Int
+  status: String
+  uuid: String
+}
+
+input selectWinnerInput {
+  participant_id: String
+  uuid: String
+}
+
+input transferWalletAmount {
+  amount: String
+  uuid: String
+}
+
+input txnIdInput {
+  amount: String
+  uuid: String
+}
+
+input updatePasswordInput {
+  confirm_password: String!
+  currunt_password: String!
+  new_password: String!
+}
+
+input withdrawWalletAmount {
+  amount: String
+  platform: String
+}
+
+input withdrawWalletAmountManually {
+  amount: String
+  device_logs: JSON
+  platform: String
 }

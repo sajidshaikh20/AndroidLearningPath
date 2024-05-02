@@ -26,6 +26,12 @@ class MyPreference @Inject constructor(private var mSharedPref: SharedPreference
             apply()
         }
     }
+    fun setClearStringValue(key: String) {
+        mSharedPref.edit {
+            remove(key)
+            apply()
+        }
+    }
 
     fun getValueBoolean(
         key: String,

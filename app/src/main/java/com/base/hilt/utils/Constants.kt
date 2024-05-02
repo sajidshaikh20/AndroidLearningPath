@@ -12,4 +12,6 @@ object Constants {
     const val TOKEN_EXPIRED = "Your session has been expired. Please login again"
     const val COMMA = ","
     const val EMPTY = ""
+
+    const val push_type = "push_type"
 }

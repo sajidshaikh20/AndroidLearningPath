@@ -1,0 +1,37 @@
+mutation login($input: LoginInput!) {
+    login(input: $input) {
+        meta{
+            status
+            message
+            message_code
+            status_code
+        }
+        data {
+            token_type
+            expires_in
+            access_token
+            refresh_token
+            user{
+                uuid
+                chat_id
+                id
+                first_name
+                last_name
+                avatar
+                email
+                mobile_number
+                status
+                email_verified_at
+                verified
+                dob
+                referral_code
+                wallet_amount
+                usable_wallet_amount
+                chat_jwt_token
+                total_credit_amount
+                notification_settings
+                user_timezone
+            }
+        }
+    }
+}
