@@ -30,12 +30,12 @@ class MainActivityViewModel @Inject constructor(private val getDataWithFlowUseCa
         _isLoading.asStateFlow() // It allows observing the loading state from outside the ViewModel.
 
 
-    /*   init {
+       init {
            viewModelScope.launch {
                delay(3000)
                _isLoading.value = false
            }
-       }*/
+       }
 
     private val _getData = MutableStateFlow(GetDataStateHandler())
     val getData: StateFlow<GetDataStateHandler> = _getData
